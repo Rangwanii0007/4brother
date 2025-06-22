@@ -3,356 +3,793 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>4Brothers - Pizza & Burgers</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
+  <title>4Brothers | Artisanal Pizza & Burgers</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* === CSS Variables === */
+    /* ===== CSS RESET ===== */
     :root {
-      --primary: #FFB800;
-      --dark: #1A1A1A;
-      --light: #FFFFFF;
+      --gold: #FFD700;
+      --dark-gold: #FFB800;
+      --black: #0A0A0A;
+      --charcoal: #1E1E1E;
+      --smoke: rgba(255, 255, 255, 0.08);
+      --transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
-
-    /* === Base Styles === */
+    
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
     body {
-      font-family: 'Poppins', sans-serif;
-      background: var(--dark);
-      color: var(--light);
+      font-family: 'Montserrat', sans-serif;
+      background: var(--black);
+      color: white;
       overflow-x: hidden;
     }
-
-    /* === Hero Section === */
-    .hero {
-      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-                  url('assets/images/hero-bg.jpg');
-      background-size: cover;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      padding: 0 5%;
-    }
-
-    nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 30px 0;
-    }
-
-    .logo {
-      font-weight: 900;
-      font-size: 2rem;
-      color: var(--primary);
-    }
-
-    nav ul {
-      display: flex;
-      list-style: none;
-    }
-
-    nav ul li {
-      margin-left: 30px;
-    }
-
-    nav ul li a {
-      color: var(--light);
-      text-decoration: none;
+    
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif;
       font-weight: 700;
     }
-
-    .hero-content {
-      flex: 1;
+    
+    /* ===== PRELOADER ===== */
+    .preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--black);
+      z-index: 9999;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      text-align: center;
     }
-
-    .hero-content h1 {
+    
+    .preloader-logo {
       font-size: 3rem;
-      margin-bottom: 20px;
+      color: var(--gold);
+      margin-bottom: 2rem;
+      opacity: 0;
+      transform: translateY(20px);
     }
-
-    .cta-button {
-      background: var(--primary);
-      color: var(--dark);
-      border: none;
-      padding: 12px 30px;
-      font-weight: bold;
-      font-size: 1.1rem;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: transform 0.3s;
+    
+    .preloader-bar {
+      width: 300px;
+      height: 2px;
+      background: var(--smoke);
+      position: relative;
+      overflow: hidden;
     }
-
-    .cta-button:hover {
+    
+    .preloader-bar::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 0;
+      background: var(--gold);
+      animation: load 2.5s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+    }
+    
+    @keyframes load {
+      to { width: 100%; }
+    }
+    
+    /* ===== GLOW EFFECTS ===== */
+    .glow-text {
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    }
+    
+    .glow-box {
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+    }
+    
+    /* ===== HERO SECTION ===== */
+    .hero {
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.4;
+      z-index: -1;
+    }
+    
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, transparent 0%, var(--black) 100%);
+      z-index: -1;
+    }
+    
+    /* ===== NAVIGATION ===== */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 2rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      transition: var(--transition);
+    }
+    
+    nav.scrolled {
+      background: rgba(10, 10, 10, 0.9);
+      backdrop-filter: blur(10px);
+      padding: 1rem 5%;
+    }
+    
+    .logo {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--gold);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo i {
+      margin-right: 10px;
+      font-size: 1.8rem;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+    
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 400;
+      position: relative;
+      padding: 0.5rem 0;
+    }
+    
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--gold);
+      transition: var(--transition);
+    }
+    
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+    
+    .nav-cta {
+      background: var(--gold);
+      color: var(--black);
+      padding: 0.8rem 2rem;
+      border-radius: 50px;
+      font-weight: 700;
+      transition: var(--transition);
+    }
+    
+    .nav-cta:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
+    }
+    
+    /* ===== HERO CONTENT ===== */
+    .hero-content {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 5%;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .hero-title {
+      font-size: 5rem;
+      margin-bottom: 1rem;
+      line-height: 1.1;
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    
+    .hero-subtitle {
+      font-size: 1.5rem;
+      margin-bottom: 3rem;
+      max-width: 600px;
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    
+    .hero-cta {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--black);
+      padding: 1.2rem 3rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: var(--transition);
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    
+    .hero-cta:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 15px 30px rgba(255, 215, 0, 0.4);
+    }
+    
+    /* ===== FLOATING INGREDIENTS ===== */
+    .floating-ingredients {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    .ingredient {
+      position: absolute;
+      opacity: 0;
+      filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.5));
+    }
+    
+    /* ===== MENU SECTION ===== */
+    .menu-section {
+      padding: 8rem 5%;
+      background: var(--charcoal);
+    }
+    
+    .section-title {
+      text-align: center;
+      font-size: 3.5rem;
+      margin-bottom: 5rem;
+      position: relative;
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background: var(--gold);
+    }
+    
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+    
+    .menu-item {
+      background: var(--black);
+      border-radius: 15px;
+      overflow: hidden;
+      transition: var(--transition);
+      position: relative;
+    }
+    
+    .menu-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.8) 100%);
+      z-index: 1;
+    }
+    
+    .menu-item:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+    
+    .menu-item-img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+    
+    .menu-item:hover .menu-item-img {
       transform: scale(1.05);
     }
-
-    .floating-icons {
-      margin-top: 30px;
+    
+    .menu-item-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 2rem;
+      z-index: 2;
     }
-
-    .floating-icons img {
+    
+    .menu-item-title {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .menu-item-price {
+      font-size: 1.5rem;
+      color: var(--gold);
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    
+    .menu-item-cta {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--black);
+      padding: 0.8rem 1.5rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: var(--transition);
+    }
+    
+    .menu-item-cta:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
+    }
+    
+    /* ===== TESTIMONIALS ===== */
+    .testimonials {
+      padding: 8rem 5%;
+      background: url('assets/images/testimonial-bg.jpg') center/cover fixed;
+      position: relative;
+    }
+    
+    .testimonials::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+    }
+    
+    .testimonial-slider {
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .testimonial {
+      background: var(--smoke);
+      backdrop-filter: blur(10px);
+      padding: 3rem;
+      border-radius: 15px;
+      text-align: center;
+      margin: 0 1rem;
+    }
+    
+    .testimonial-text {
+      font-size: 1.2rem;
+      font-style: italic;
+      margin-bottom: 2rem;
+      line-height: 1.8;
+    }
+    
+    .testimonial-author {
+      font-weight: 700;
+      color: var(--gold);
+    }
+    
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--charcoal);
+      padding: 5rem 5% 2rem;
+    }
+    
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+    
+    .footer-logo {
+      font-size: 2rem;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      display: inline-block;
+    }
+    
+    .footer-about {
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
+    }
+    
+    .footer-social {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .footer-social a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: var(--smoke);
+      border-radius: 50%;
+      color: white;
+      transition: var(--transition);
+    }
+    
+    .footer-social a:hover {
+      background: var(--gold);
+      color: var(--black);
+      transform: translateY(-5px);
+    }
+    
+    .footer-heading {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-bottom: 10px;
+    }
+    
+    .footer-heading::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
       width: 50px;
-      animation: float 3s ease-in-out infinite;
+      height: 2px;
+      background: var(--gold);
     }
-
+    
+    .footer-links {
+      list-style: none;
+    }
+    
+    .footer-links li {
+      margin-bottom: 1rem;
+    }
+    
+    .footer-links a {
+      color: white;
+      text-decoration: none;
+      transition: var(--transition);
+      display: inline-block;
+    }
+    
+    .footer-links a:hover {
+      color: var(--gold);
+      transform: translateX(5px);
+    }
+    
+    .footer-contact-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .footer-contact-item i {
+      margin-right: 1rem;
+      color: var(--gold);
+      width: 20px;
+      text-align: center;
+    }
+    
+    .copyright {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid var(--smoke);
+      color: #777;
+    }
+    
+    /* ===== ANIMATIONS ===== */
     @keyframes float {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-20px); }
     }
-
-    /* === Scroll Animation Section === */
-    .scroll-animation {
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      position: relative;
-      opacity: 0;
-      transition: opacity 0.5s;
+    
+    @keyframes fadeIn {
+      to { opacity: 1; transform: translateY(0); }
     }
-
-    .scroll-animation h2 {
-      font-size: 2.5rem;
-      margin-bottom: 50px;
-      text-align: center;
+    
+    @keyframes ingredientFloat {
+      0% { transform: translateY(100px) rotate(0deg); opacity: 0; }
+      20% { opacity: 1; }
+      100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
     }
-
-    .flying-pizza {
-      position: absolute;
-      left: -200px;
-      width: 200px;
-      animation: flyFromLeft 1.5s forwards paused;
-    }
-
-    .flying-burger {
-      position: absolute;
-      right: -200px;
-      width: 200px;
-      animation: flyFromRight 1.5s forwards paused;
-    }
-
-    @keyframes flyFromLeft {
-      to { left: 20%; transform: rotate(15deg); }
-    }
-
-    @keyframes flyFromRight {
-      to { right: 20%; transform: rotate(-15deg); }
-    }
-
-    /* === Deals Section === */
-    .deals {
-      padding: 80px 5%;
-      background: var(--dark);
-    }
-
-    .deals-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 30px;
-      margin-top: 50px;
-    }
-
-    .deal-card {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border-radius: 10px;
-      padding: 20px;
-      transition: transform 0.3s;
-      text-align: center;
-    }
-
-    .deal-card:hover {
-      transform: translateY(-10px);
-    }
-
-    .deal-card img {
-      width: 100%;
-      border-radius: 10px;
-      margin-bottom: 15px;
-    }
-
-    .deal-card h3 {
-      font-size: 1.5rem;
-      margin-bottom: 10px;
-    }
-
-    .price {
-      color: var(--primary);
-      font-weight: bold;
-      font-size: 1.3rem;
-      margin-bottom: 15px;
-    }
-
-    .order-button {
-      background: transparent;
-      border: 2px solid var(--primary);
-      color: var(--primary);
-      padding: 8px 20px;
-      border-radius: 30px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .order-button:hover {
-      background: var(--primary);
-      color: var(--dark);
-    }
-
-    /* === Footer === */
-    footer {
-      background: #000;
-      padding: 50px 5%;
-      text-align: center;
-    }
-
-    .social-links {
-      margin-bottom: 20px;
-    }
-
-    .social-links a {
-      color: var(--light);
-      margin: 0 10px;
-      font-size: 1.5rem;
-    }
-
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-
-    .footer-links a {
-      color: var(--light);
-      margin: 0 15px;
-      text-decoration: none;
-    }
-
-    .copyright {
-      color: #666;
-    }
-
-    /* === Responsive Design === */
-    @media (max-width: 768px) {
-      .hero-content h1 {
-        font-size: 2rem;
+    
+    /* ===== RESPONSIVE DESIGN ===== */
+    @media (max-width: 992px) {
+      .hero-title {
+        font-size: 4rem;
       }
-
-      .scroll-animation h2 {
-        font-size: 1.8rem;
-      }
-
-      .flying-pizza, .flying-burger {
-        width: 120px;
-      }
-
-      nav ul {
+      
+      .nav-links {
         display: none;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 3rem;
+      }
+      
+      .hero-subtitle {
+        font-size: 1.2rem;
+      }
+      
+      .section-title {
+        font-size: 2.5rem;
+      }
+      
+      .menu-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
-  <!-- === Hero Section === -->
-  <header class="hero">
+  <!-- ===== PRELOADER ===== -->
+  <div class="preloader">
+    <div class="preloader-logo">4Brothers</div>
+    <div class="preloader-bar"></div>
+  </div>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero">
+    <video autoplay muted loop class="hero-video">
+      <source src="assets/videos/hero-bg.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+    
+    <!-- Floating Ingredients -->
+    <div class="floating-ingredients">
+      <img src="assets/images/ingredient1.png" class="ingredient" style="width: 80px; top: 20%; left: 10%;">
+      <img src="assets/images/ingredient2.png" class="ingredient" style="width: 60px; top: 30%; left: 80%;">
+      <img src="assets/images/ingredient3.png" class="ingredient" style="width: 70px; top: 70%; left: 15%;">
+      <img src="assets/images/ingredient4.png" class="ingredient" style="width: 90px; top: 60%; left: 75%;">
+    </div>
+    
     <nav>
-      <div class="logo">4Brothers</div>
-      <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#menu">Menu</a></li>
-        <li><a href="#offers">Offers</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
+      <a href="#" class="logo">
+        <i class="fas fa-utensils"></i>
+        4Brothers
+      </a>
+      <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="#menu">Menu</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <a href="#" class="nav-cta">Reservations</a>
     </nav>
+    
     <div class="hero-content">
-      <h1>Hot Pizza, Juicy Burgers – Taste of Brothers!</h1>
-      <button class="cta-button">Order Now</button>
-      <div class="floating-icons">
-        <img src="assets/images/delivery.png" alt="Delivery">
-      </div>
-    </div>
-  </header>
-
-  <!-- === Scroll Animation Section === -->
-  <section class="scroll-animation" id="offers">
-    <img src="assets/images/pizza.png" class="flying-pizza" alt="Pizza">
-    <img src="assets/images/burger.png" class="flying-burger" alt="Burger">
-    <h2>Set Deals You Can’t Resist!</h2>
-  </section>
-
-  <!-- === Deals Section === -->
-  <section class="deals" id="menu">
-    <h2 style="text-align: center; font-size: 2.5rem;">Our Menu</h2>
-    <div class="deals-container">
-      <div class="deal-card">
-        <img src="assets/images/combo1.jpg" alt="Brothers Combo">
-        <h3>Brothers Combo</h3>
-        <p class="price">Only Rs. 899</p>
-        <button class="order-button">Order Now</button>
-      </div>
-      <div class="deal-card">
-        <img src="assets/images/combo2.jpg" alt="Mega Burger">
-        <h3>Mega Burger</h3>
-        <p class="price">Only Rs. 499</p>
-        <button class="order-button">Order Now</button>
-      </div>
-      <div class="deal-card">
-        <img src="assets/images/combo3.jpg" alt="Family Pizza">
-        <h3>Family Pizza</h3>
-        <p class="price">Only Rs. 1299</p>
-        <button class="order-button">Order Now</button>
-      </div>
+      <h1 class="hero-title glow-text">Artisanal Pizza & Burgers</h1>
+      <p class="hero-subtitle">Crafted with passion since 2010. Experience the perfect blend of tradition and innovation in every bite.</p>
+      <a href="#menu" class="hero-cta glow-box">Explore Menu</a>
     </div>
   </section>
 
-  <!-- === Footer === -->
+  <!-- ===== MENU SECTION ===== -->
+  <section class="menu-section" id="menu">
+    <h2 class="section-title glow-text">Our Signature Creations</h2>
+    
+    <div class="menu-grid">
+      <!-- Item 1 -->
+      <div class="menu-item">
+        <img src="assets/images/pizza1.jpg" alt="Truffle Pizza" class="menu-item-img">
+        <div class="menu-item-content">
+          <h3 class="menu-item-title">Black Truffle Pizza</h3>
+          <p class="menu-item-price">$24.99</p>
+          <a href="#" class="menu-item-cta">Order Now</a>
+        </div>
+      </div>
+      
+      <!-- Item 2 -->
+      <div class="menu-item">
+        <img src="assets/images/burger1.jpg" alt="Gold Burger" class="menu-item-img">
+        <div class="menu-item-content">
+          <h3 class="menu-item-title">24K Gold Burger</h3>
+          <p class="menu-item-price">$29.99</p>
+          <a href="#" class="menu-item-cta">Order Now</a>
+        </div>
+      </div>
+      
+      <!-- Item 3 -->
+      <div class="menu-item">
+        <img src="assets/images/pizza2.jpg" alt="Spicy Pizza" class="menu-item-img">
+        <div class="menu-item-content">
+          <h3 class="menu-item-title">Dragon's Breath Pizza</h3>
+          <p class="menu-item-price">$22.99</p>
+          <a href="#" class="menu-item-cta">Order Now</a>
+        </div>
+      </div>
+      
+      <!-- Item 4 -->
+      <div class="menu-item">
+        <img src="assets/images/burger2.jpg" alt="BBQ Burger" class="menu-item-img">
+        <div class="menu-item-content">
+          <h3 class="menu-item-title">Smoky BBQ Beast</h3>
+          <p class="menu-item-price">$26.99</p>
+          <a href="#" class="menu-item-cta">Order Now</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TESTIMONIALS ===== -->
+  <section class="testimonials">
+    <div class="testimonial-slider">
+      <div class="testimonial">
+        <p class="testimonial-text">"The 24K Gold Burger is literally worth its weight in gold. The combination of Wagyu beef and edible gold leaf creates an experience that's unforgettable."</p>
+        <p class="testimonial-author">- James Beard, Food Critic</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
   <footer id="contact">
-    <div class="social-links">
-      <a href="#"><i class="fab fa-facebook"></i></a>
-      <a href="#"><i class="fab fa-instagram"></i></a>
-      <a href="#"><i class="fab fa-twitter"></i></a>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <a href="#" class="footer-logo">
+          <i class="fas fa-utensils"></i>
+          4Brothers
+        </a>
+        <p class="footer-about">Founded by four brothers with a passion for extraordinary flavors. We blend traditional recipes with modern techniques to create culinary masterpieces.</p>
+        <div class="footer-social">
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-tiktok"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+      </div>
+      
+      <div class="footer-col">
+        <h3 class="footer-heading">Quick Links</h3>
+        <ul class="footer-links">
+          <li><a href="#">Home</a></li>
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#about">Our Story</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-col">
+        <h3 class="footer-heading">Contact Us</h3>
+        <div class="footer-contact-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>123 Gourmet Ave, Foodie City</span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fas fa-phone-alt"></i>
+          <span>(555) 123-4567</span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fas fa-envelope"></i>
+          <span>hello@4brothers.com</span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fas fa-clock"></i>
+          <span>Mon-Sun: 11AM - 11PM</span>
+        </div>
+      </div>
     </div>
-    <div class="footer-links">
-      <a href="#">Home</a>
-      <a href="#menu">Menu</a>
-      <a href="#offers">Offers</a>
-      <a href="#contact">Contact</a>
-    </div>
+    
     <div class="copyright">
-      &copy; 2023 4Brothers. All Rights Reserved.
+      &copy; 2023 4Brothers Gourmet. All Rights Reserved.
     </div>
   </footer>
 
-  <!-- === JavaScript === -->
+  <!-- ===== JAVASCRIPT ===== -->
   <script>
-    // Trigger scroll animations
-    window.addEventListener('scroll', () => {
-      const scrollSection = document.querySelector('.scroll-animation');
-      const position = scrollSection.getBoundingClientRect().top;
-      const screenPosition = window.innerHeight / 1.3;
-
-      if (position < screenPosition) {
-        scrollSection.style.opacity = '1';
-        document.querySelector('.flying-pizza').style.animationPlayState = 'running';
-        document.querySelector('.flying-burger').style.animationPlayState = 'running';
+    // Preloader Animation
+    window.addEventListener('load', function() {
+      const preloader = document.querySelector('.preloader');
+      const preloaderLogo = document.querySelector('.preloader-logo');
+      
+      // Animate logo
+      setTimeout(() => {
+        preloaderLogo.style.opacity = '1';
+        preloaderLogo.style.transform = 'translateY(0)';
+        preloaderLogo.style.transition = 'all 1s ease';
+      }, 500);
+      
+      // Remove preloader
+      setTimeout(() => {
+        preloader.style.opacity = '0';
+        preloader.style.visibility = 'hidden';
+        
+        // Animate hero elements
+        document.querySelector('.hero-title').style.animation = 'fadeIn 1s forwards 0.3s';
+        document.querySelector('.hero-subtitle').style.animation = 'fadeIn 1s forwards 0.6s';
+        document.querySelector('.hero-cta').style.animation = 'fadeIn 1s forwards 0.9s';
+        
+        // Activate floating ingredients
+        const ingredients = document.querySelectorAll('.ingredient');
+        ingredients.forEach((ing, index) => {
+          ing.style.animation = `ingredientFloat ${15 + index * 3}s linear infinite ${index * 0.5}s`;
+        });
+      }, 3000);
+    });
+    
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+      const nav = document.querySelector('nav');
+      if (window.scrollY > 100) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
       }
     });
-
-    // Add Font Awesome for icons (optional)
-    const faScript = document.createElement('script');
-    faScript.src = 'https://kit.fontawesome.com/a076d05399.js';
-    document.head.appendChild(faScript);
+    
+    // Parallax effect for menu items
+    const menuItems = document.querySelectorAll('.menu-item');
+    window.addEventListener('scroll', function() {
+      const scrollPosition = window.scrollY;
+      
+      menuItems.forEach((item, index) => {
+        const speed = 0.1 + (index * 0.05);
+        item.style.transform = `translateY(${scrollPosition * speed}px)`;
+      });
+    });
+    
+    // Animate elements when they come into view
+    const animateOnScroll = function() {
+      const elements = document.querySelectorAll('.menu-item, .section-title, .testimonial');
+      
+      elements.forEach(element => {
+        const elementPosition = element.getBoundingClientRect().top;
+        const windowHeight = window.innerHeight;
+        
+        if (elementPosition < windowHeight - 100) {
+          element.style.opacity = '1';
+          element.style.transform = 'translateY(0)';
+        }
+      });
+    };
+    
+    // Set initial state
+    document.querySelectorAll('.menu-item, .section-title, .testimonial').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(50px)';
+      el.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+    });
+    
+    window.addEventListener('scroll', animateOnScroll);
+    animateOnScroll(); // Run once on load
   </script>
 </body>
 </html>
