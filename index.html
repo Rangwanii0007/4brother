@@ -1,343 +1,278 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>4Brothers – Pizza & Burger</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Oswald:wght@700&display=swap" rel="stylesheet">
-    <style>
-        /* Custom CSS for fonts and animations */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #000000; /* Default background */
-            color: #FFFFFF; /* Default text color */
-            overflow-x: hidden; /* Prevent horizontal scroll due to animations */
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>4Brothers Pizza & Burger</title>
+  <style>
+    /* Reset and Base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        /* Specific font for headings - Oswald for bold, vintage-modern feel */
-        .font-heading {
-            font-family: 'Oswald', sans-serif;
-        }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #1a1a1a;
+      color: white;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
 
-        /* Hero section specific styles */
-        .hero-section {
-            background-color: #1A1A1A; /* Deep Charcoal for Hero */
-            min-height: 100vh; /* Full viewport height */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden; /* Ensure no overflow from animated elements */
-        }
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      background: linear-gradient(to bottom, #1a1a1a 60%, #111);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
 
-        /* Scroll animation elements initially off-screen/hidden */
-        .pizza-slice {
-            position: absolute;
-            top: 50%;
-            left: -200px; /* Start off-screen left */
-            transform: translateY(-50%) rotate(-20deg);
-            opacity: 0;
-            transition: all 1s ease-out;
-            width: 150px; /* Base size */
-            height: auto;
-            z-index: 10; /* Above background */
-        }
+    .logo {
+      font-size: 3rem;
+      color: #FFB800;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
 
-        .burger {
-            position: absolute;
-            top: 50%;
-            right: -200px; /* Start off-screen right */
-            transform: translateY(-50%) rotate(20deg);
-            opacity: 0;
-            transition: all 1s ease-out;
-            width: 150px; /* Base size */
-            height: auto;
-            z-index: 10;
-        }
+    nav {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
 
-        /* Animations for scroll reveal */
-        .pizza-slice.animate-in {
-            left: 10%; /* Fly in from left */
-            opacity: 1;
-            transform: translateY(-50%) rotate(0deg);
-        }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
 
-        .burger.animate-in {
-            right: 10%; /* Fly in from right */
-            opacity: 1;
-            transform: translateY(-50%) rotate(0deg);
-        }
+    nav a:hover {
+      color: #FFB800;
+    }
 
-        .deal-text.animate-in {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .hero-content h1 {
+      font-size: 3rem;
+      color: #FFB800;
+    }
 
-        /* Keyframes for floating delivery icons */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-5px); }
-            100% { transform: translateY(0px); }
-        }
+    .hero-content p {
+      margin: 1rem 0;
+      font-size: 1.2rem;
+    }
 
-        .float-animation {
-            animation: float 2s ease-in-out infinite;
-        }
+    .cta {
+      padding: 0.75rem 1.5rem;
+      background-color: #FFB800;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
 
-        /* Glassmorphism style for buttons/cards (example) */
-        .glass-button {
-            background: rgba(255, 255, 255, 0.1); /* Slightly transparent white */
-            backdrop-filter: blur(10px); /* Blur effect */
-            border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow for depth */
-            transition: all 0.3s ease;
-        }
-        .glass-button:hover {
-            background: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-        }
+    .cta:hover {
+      transform: scale(1.05);
+    }
 
-        /* Parallax background effect placeholder */
-        .parallax-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('https://placehold.co/1920x1080/000000/FFFFFF?text=Background+Pattern'); /* Placeholder, replace with actual pattern/image */
-            background-size: cover;
-            background-position: center;
-            z-index: -1; /* Behind content */
-            transition: transform 0.1s linear; /* Smooth parallax */
-        }
+    /* Scroll Animation */
+    .scroll-animation {
+      height: 100vh;
+      background-color: #000;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-direction: column;
+    }
 
-        /* Deal card hover effect */
-        .deal-card-image:hover {
-            transform: translateY(-5px); /* Image floats slightly */
-            transition: transform 0.2s ease-out;
-        }
+    .fly-in {
+      position: absolute;
+      font-size: 5rem;
+      animation: fly 4s ease-in-out infinite alternate;
+      opacity: 0.8;
+    }
 
-        /* Responsive adjustments for smaller screens */
-        @media (max-width: 768px) {
-            .pizza-slice, .burger {
-                width: 100px; /* Smaller on mobile */
-            }
-            .pizza-slice.animate-in {
-                left: 0%;
-            }
-            .burger.animate-in {
-                right: 0%;
-            }
-            .hero-section h1 {
-                font-size: 2.5rem; /* Adjust heading size */
-            }
-            .hero-section p {
-                font-size: 1rem; /* Adjust tagline size */
-            }
-        }
-    </style>
+    .pizza {
+      left: -100px;
+      top: 20%;
+      animation-delay: 0.5s;
+    }
+
+    .burger {
+      right: -100px;
+      bottom: 20%;
+      animation-delay: 1s;
+    }
+
+    @keyframes fly {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(150px);
+      }
+    }
+
+    .deal-text {
+      color: #FFB800;
+      text-align: center;
+      z-index: 1;
+    }
+
+    .deal-text h2 {
+      font-size: 2.5rem;
+    }
+
+    /* Menu Cards */
+    .menu-section {
+      padding: 50px 20px;
+      background: #111;
+      text-align: center;
+    }
+
+    .menu-section h2 {
+      color: #FFB800;
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+    }
+
+    .menu-items {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    .menu-card {
+      background: #1a1a1a;
+      border: 2px solid #FFB800;
+      border-radius: 15px;
+      padding: 20px;
+      width: 250px;
+      transition: transform 0.3s ease;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-10px);
+    }
+
+    .menu-card img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .menu-card h3 {
+      font-size: 1.3rem;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .menu-card p {
+      color: #ccc;
+      font-size: 0.9rem;
+      margin-bottom: 15px;
+    }
+
+    .price {
+      font-size: 1.2rem;
+      color: #FFB800;
+      font-weight: bold;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #0d0d0d;
+      color: #999;
+      padding: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: #FFB800;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    @media(max-width: 768px) {
+      nav {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .menu-items {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
 </head>
-<body class="bg-black text-white">
+<body>
+  <!-- Header / Hero Section -->
+  <header class="hero">
+    <div class="logo">4Brothers</div>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Menu</a>
+      <a href="#">Offers</a>
+      <a href="#">Contact</a>
+    </nav>
+    <div class="hero-content">
+      <h1>Hot Pizza, Juicy Burgers</h1>
+      <p>The Taste of Brothers</p>
+      <button class="cta">Order Now</button>
+    </div>
+  </header>
 
-    <!-- Parallax Background Placeholder (will be manipulated by JS) -->
-    <div class="parallax-bg" id="parallaxBg"></div>
+  <!-- Scroll Animation Section -->
+  <section class="scroll-animation">
+    <div class="fly-in pizza">🍕</div>
+    <div class="fly-in burger">🍔</div>
+    <div class="deal-text">
+      <h2>Set Deals You Can’t Resist!</h2>
+    </div>
+  </section>
 
-    <!-- Hero Section -->
-    <section class="hero-section" id="hero">
-        <!-- Navigation -->
-        <nav class="absolute top-0 left-0 right-0 p-6 z-20 transition-all duration-500" id="mainNav">
-            <div class="container mx-auto flex justify-between items-center">
-                <!-- Logo -->
-                <a href="#" class="text-4xl font-heading text-[#FFB800] tracking-wide">4Brothers</a>
-                <!-- Navigation Links -->
-                <div class="space-x-8 hidden md:flex">
-                    <a href="#hero" class="text-white hover:text-[#FFD700] transition-colors duration-300">Home</a>
-                    <a href="#menu" class="text-white hover:text-[#FFD700] transition-colors duration-300">Menu</a>
-                    <a href="#offers" class="text-white hover:text-[#FFD700] transition-colors duration-300">Offers</a>
-                    <a href="#contact" class="text-white hover:text-[#FFD700] transition-colors duration-300">Contact</a>
-                </div>
-                <!-- Mobile Menu Button (Hamburger) -->
-                <button class="md:hidden text-white focus:outline-none" id="mobileMenuButton">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                </button>
-            </div>
-        </nav>
+  <!-- Menu Section -->
+  <section class="menu-section">
+    <h2>Our Best Offers</h2>
+    <div class="menu-items">
+      <div class="menu-card">
+        <img src="https://i.imgur.com/xu7uG1y.png" alt="Pizza Deal" />
+        <h3>Family Pizza Deal</h3>
+        <p>Large pizza + 1.5L Drink + Garlic Bread</p>
+        <div class="price">Rs. 1199</div>
+      </div>
+      <div class="menu-card">
+        <img src="https://i.imgur.com/1qs7I4v.png" alt="Burger Deal" />
+        <h3>Double Beef Burger</h3>
+        <p>Double patty + Fries + Cold Drink</p>
+        <div class="price">Rs. 899</div>
+      </div>
+      <div class="menu-card">
+        <img src="https://i.imgur.com/YWsUGWs.png" alt="Pizza Burger Deal" />
+        <h3>Pizza & Burger Combo</h3>
+        <p>Medium pizza + Classic burger + Drink</p>
+        <div class="price">Rs. 1049</div>
+      </div>
+    </div>
+  </section>
 
-        <!-- Mobile Navigation Overlay (Hidden by default) -->
-        <div id="mobileMenuOverlay" class="fixed inset-0 bg-black bg-opacity-95 z-40 flex flex-col items-center justify-center space-y-8 text-2xl transition-transform transform translate-x-full md:hidden">
-            <a href="#hero" class="text-white hover:text-[#FFD700] transition-colors duration-300" onclick="closeMobileMenu()">Home</a>
-            <a href="#menu" class="text-white hover:text-[#FFD700] transition-colors duration-300" onclick="closeMobileMenu()">Menu</a>
-            <a href="#offers" class="text-white hover:text-[#FFD700] transition-colors duration-300" onclick="closeMobileMenu()">Offers</a>
-            <a href="#contact" class="text-white hover:text-[#FFD700] transition-colors duration-300" onclick="closeMobileMenu()">Contact</a>
-            <button class="absolute top-6 right-6 text-white text-4xl" onclick="closeMobileMenu()">&times;</button>
-        </div>
-
-
-        <!-- Hero Content -->
-        <div class="relative z-10 p-6">
-            <h1 class="text-6xl md:text-8xl font-heading text-[#FFD700] mb-4 drop-shadow-lg leading-tight">4Brothers</h1>
-            <p class="text-xl md:text-2xl text-white-800 mb-8 max-w-2xl mx-auto">Hot Pizza, Juicy Burgers – Taste of Brothers!</p>
-            <button class="bg-[#FFB800] text-black px-10 py-4 rounded-full text-xl font-bold uppercase hover:bg-[#FFD700] transition-all duration-300 shadow-xl relative overflow-hidden group">
-                Order Now
-                <span class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center space-x-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 transform -translate-x-full">
-                    <span class="float-animation">🛵</span>
-                    <span class="float-animation delay-100">🍔</span>
-                </span>
-            </button>
-        </div>
-    </section>
-
-    <!-- Scroll Animation Begins Section -->
-    <section class="h-[100vh] bg-black flex flex-col justify-center items-center text-center relative overflow-hidden" id="scroll-animation-trigger">
-        <img src="https://placehold.co/150x150/FFB800/000000?text=Pizza" alt="Pizza Slice" class="pizza-slice" id="pizzaSlice">
-        <img src="https://placehold.co/150x150/FFB800/000000?text=Burger" alt="Burger" class="burger" id="burger">
-        <p class="text-3xl md:text-5xl font-heading text-[#FFD700] opacity-0 transition-opacity duration-1000 transform translate-y-10 deal-text z-20" id="dealText">Set Deals You Can’t Resist!</p>
-    </section>
-
-    <!-- Deal Showcase Section -->
-    <section class="py-16 md:py-24 bg-black text-white" id="menu">
-        <div class="container mx-auto px-6">
-            <h2 class="text-5xl md:text-6xl font-heading text-center text-[#FFD700] mb-16">Our Irresistible Deals</h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                <!-- Deal Card 1 -->
-                <div class="bg-[#1A1A1A] rounded-2xl p-6 shadow-xl border border-gray-800 flex flex-col items-center text-center">
-                    <img src="https://placehold.co/300x200/FFB800/000000?text=Brothers+Combo" alt="Brothers Combo" class="w-full h-48 object-cover rounded-xl mb-6 deal-card-image">
-                    <h3 class="text-3xl font-heading text-white mb-2">Brothers Combo</h3>
-                    <p class="text-lg text-gray-400 mb-4">Pizza, Burger & Drink</p>
-                    <p class="text-4xl font-extrabold text-[#FFD700] mb-6 animate-pulse">Only Rs. 899</p>
-                    <button class="glass-button text-white px-8 py-3 rounded-full uppercase font-semibold text-lg">Order Now</button>
-                </div>
-
-                <!-- Deal Card 2 -->
-                <div class="bg-[#1A1A1A] rounded-2xl p-6 shadow-xl border border-gray-800 flex flex-col items-center text-center">
-                    <img src="https://placehold.co/300x200/FFB800/000000?text=Fire+Burger+Set" alt="Fire Burger Set" class="w-full h-48 object-cover rounded-xl mb-6 deal-card-image">
-                    <h3 class="text-3xl font-heading text-white mb-2">Fire Burger Set</h3>
-                    <p class="text-lg text-gray-400 mb-4">Spicy Burger, Fries & Shake</p>
-                    <p class="text-4xl font-extrabold text-[#FFD700] mb-6 animate-pulse">Only Rs. 749</p>
-                    <button class="glass-button text-white px-8 py-3 rounded-full uppercase font-semibold text-lg">Order Now</button>
-                </div>
-
-                <!-- Deal Card 3 -->
-                <div class="bg-[#1A1A1A] rounded-2xl p-6 shadow-xl border border-gray-800 flex flex-col items-center text-center">
-                    <img src="https://placehold.co/300x200/FFB800/000000?text=Family+Feast" alt="Family Feast" class="w-full h-48 object-cover rounded-xl mb-6 deal-card-image">
-                    <h3 class="text-3xl font-heading text-white mb-2">Family Feast</h3>
-                    <p class="text-lg text-gray-400 mb-4">Large Pizza, Wings & Drinks</p>
-                    <p class="text-4xl font-extrabold text-[#FFD700] mb-6 animate-pulse">Only Rs. 1899</p>
-                    <button class="glass-button text-white px-8 py-3 rounded-full uppercase font-semibold text-lg">Order Now</button>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-[#1A1A1A] py-12 text-white" id="contact">
-        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
-            <!-- Contact Info -->
-            <div>
-                <h4 class="text-2xl font-heading text-[#FFD700] mb-4">Contact Us</h4>
-                <p class="text-gray-400">123 Pizza Lane, Food City, PK</p>
-                <p class="text-gray-400">Phone: +92 3XX XXX XXXX</p>
-                <p class="text-gray-400">Email: info@4brothers.com</p>
-            </div>
-            <!-- Quick Menu Links -->
-            <div>
-                <h4 class="text-2xl font-heading text-[#FFD700] mb-4">Quick Links</h4>
-                <ul class="space-y-2">
-                    <li><a href="#hero" class="text-gray-400 hover:text-white transition-colors duration-300">Home</a></li>
-                    <li><a href="#menu" class="text-gray-400 hover:text-white transition-colors duration-300">Menu</a></li>
-                    <li><a href="#offers" class="text-gray-400 hover:text-white transition-colors duration-300">Offers</a></li>
-                </ul>
-            </div>
-            <!-- Social Links -->
-            <div>
-                <h4 class="text-2xl font-heading text-[#FFD700] mb-4">Follow Us</h4>
-                <div class="flex justify-center md:justify-start space-x-4">
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
-                        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33V22H12c5.523 0 10-4.477 10-10Z" clip-rule="evenodd" />
-                        </svg>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
-                        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.715.056 8.825.351 10.125 1.663 10.45 10.318.043.93.056 1.286.056 3.715s-.013 2.784-.056 3.715c-.351 8.825-1.663 10.125-10.318 10.45-.93.043-1.286.056-3.715.056s-2.784-.013-3.715-.056c-8.825-.351-10.125-1.663-10.45-10.318-.043-.93-.056-1.286-.056-3.715s.013-2.784.056-3.715c.351-8.825 1.663-10.125 10.318-10.45.93-.043 1.286-.056 3.715-.056ZM12 4.076c-2.433 0-2.756.01-3.666.053-7.857.317-8.62 1.077-8.943 8.75-.043.91-.053 1.233-.053 3.666s.01 2.756.053 3.666c.323 7.673 1.086 8.436 8.943 8.75.91.043 1.233.053 3.666.053s2.756-.01 3.666-.053c7.857-.317 8.62-1.077 8.943-8.75.043-.91.053-1.233.053-3.666s-.01-2.756-.053-3.666c-.323-7.673-1.086-8.436-8.943-8.75-.91-.043-1.233-.053-3.666-.053ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm-6.5-.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5Z" clip-rule="evenodd" />
-                        </svg>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="text-center text-gray-500 mt-10">
-            &copy; 2023 4Brothers. All rights reserved.
-        </div>
-    </footer>
-
-    <script>
-        // JavaScript for scroll-based animations and responsive menu
-
-        const mainNav = document.getElementById('mainNav');
-        const heroSection = document.getElementById('hero');
-        const scrollTriggerSection = document.getElementById('scroll-animation-trigger');
-        const pizzaSlice = document.getElementById('pizzaSlice');
-        const burger = document.getElementById('burger');
-        const dealText = document.getElementById('dealText');
-        const parallaxBg = document.getElementById('parallaxBg');
-
-        // Mobile Menu Logic
-        const mobileMenuButton = document.getElementById('mobileMenuButton');
-        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
-
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenuOverlay.classList.remove('translate-x-full');
-            mobileMenuOverlay.classList.add('translate-x-0');
-        });
-
-        function closeMobileMenu() {
-            mobileMenuOverlay.classList.remove('translate-x-0');
-            mobileMenuOverlay.classList.add('translate-x-full');
-        }
-
-        // --- Scroll Animation Logic ---
-        function handleScroll() {
-            const scrollY = window.scrollY;
-            const heroHeight = heroSection.offsetHeight;
-            const triggerOffset = scrollTriggerSection.offsetTop - window.innerHeight / 2; // Trigger when section is halfway into view
-
-            // Parallax effect for background
-            // Adjust the divisor for more or less parallax effect
-            parallaxBg.style.transform = `translateY(${scrollY * 0.2}px)`;
-
-            // Header fade upward (adjust value for more or less fade)
-            if (scrollY > 50) {
-                mainNav.classList.remove('bg-transparent');
-                mainNav.classList.add('bg-black', 'bg-opacity-80', 'shadow-lg');
-            } else {
-                mainNav.classList.remove('bg-black', 'bg-opacity-80', 'shadow-lg');
-                mainNav.classList.add('bg-transparent');
-            }
-
-            // Scroll-triggered animations for pizza, burger, and text
-            if (scrollY > triggerOffset) {
-                pizzaSlice.classList.add('animate-in');
-                burger.classList.add('animate-in');
-                dealText.classList.add('animate-in');
-            } else {
-                // Reset if scrolled back up
-                pizzaSlice.classList.remove('animate-in');
-                burger.classList.remove('animate-in');
-                dealText.classList.remove('animate-in');
-            }
-        }
-
-        // Add scroll event listener
-        window.addEventListener('scroll', handleScroll);
-
-        // Initial call to set states on load
-        handleScroll();
-    </script>
+  <!-- Footer -->
+  <footer>
+    © 2025 4Brothers. All Rights Reserved.
+    <br>
+    Follow us:
+    <a href="#">Facebook</a> | <a href="#">Instagram</a>
+  </footer>
 </body>
 </html>
