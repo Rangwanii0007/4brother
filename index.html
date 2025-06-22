@@ -3,97 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>4 Brothers | Quetta's Premium Pizzas & Burgers</title>
+    <title>4 Brothers | Golden Pizzas & Burgers</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#FFD700',
-                        secondary: '#FFF8E1',
-                        accent: '#FFC107',
-                        dark: '#212121',
-                        quetta: '#FF5722',
-                        yellow: {
-                            light: '#FFF9C4',
-                            dark: '#FBC02D'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Poppins', 'sans-serif'],
-                        heading: ['Bebas Neue', 'sans-serif'],
-                    },
-                }
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold-light: #FFF9C4;
+            --gold-primary: #FFD700;
+            --gold-dark: #FBC02D;
+            --gold-accent: #FFC107;
+            --dark: #212121;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--gold-light);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+        
+        .font-heading {
+            font-family: 'Bebas Neue', sans-serif;
+        }
+        
+        .gold-gradient {
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+        }
+        
+        .gold-text-gradient {
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .menu-card {
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateY(100px);
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .menu-card.animate {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .food-flying {
+            position: absolute;
+            z-index: -1;
+            opacity: 0.15;
+            animation: floating 15s infinite linear;
+        }
+        
+        @keyframes floating {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-100px) rotate(180deg);
+            }
+            100% {
+                transform: translateY(0) rotate(360deg);
             }
         }
-    </script>
-    <style>
-        .hero-section {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=1981&auto=format&fit=crop') no-repeat center center;
-            background-size: cover;
-            height: 80vh;
-        }
-        .menu-card {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            background: white;
-        }
-        .menu-card:hover {
-            transform: translateY(-15px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-        }
-        .location-badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, #FF5722 0%, #E64A19 100%);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-weight: 600;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #FFD700 0%, #FBC02D 100%);
+        
+        .btn-gold {
+            background: var(--gold-primary);
+            box-shadow: 0 4px 15px rgba(251, 192, 45, 0.4);
             transition: all 0.3s ease;
-            color: #212121;
-            font-weight: 600;
-            letter-spacing: 0.5px;
         }
-        .btn-primary:hover {
+        
+        .btn-gold:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.4);
+            box-shadow: 0 8px 25px rgba(251, 192, 45, 0.6);
         }
-        .section-title {
-            position: relative;
-            display: inline-block;
-            letter-spacing: 2px;
-        }
-        .section-title:after {
-            content: '';
-            position: absolute;
-            width: 60%;
-            height: 5px;
-            bottom: -12px;
-            left: 0;
-            background: linear-gradient(90deg, #FFD700 0%, #FF5722 100%);
-            border-radius: 3px;
-        }
-        .floating-cart {
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-            border-radius: 16px;
-            border: 2px solid #FFD700;
-        }
+        
         .nav-link {
             position: relative;
         }
+        
         .nav-link:after {
             content: '';
             position: absolute;
@@ -101,171 +90,172 @@
             height: 3px;
             bottom: -5px;
             left: 0;
-            background-color: #FFD700;
+            background-color: var(--gold-primary);
             transition: width 0.3s ease;
         }
+        
         .nav-link:hover:after {
             width: 100%;
         }
-        .pulse {
-            animation: pulse 2s infinite;
+        
+        .scroll-down-arrow {
+            animation: bounce 2s infinite;
         }
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
             }
-            70% {
-                box-shadow: 0 0 0 10px rgba(255, 215, 0, 0);
+            40% {
+                transform: translateY(-20px);
             }
-            100% {
-                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+            60% {
+                transform: translateY(-10px);
             }
-        }
-        .text-outline {
-            text-shadow: 2px 2px 0 #212121, -2px -2px 0 #212121, 2px -2px 0 #212121, -2px 2px 0 #212121;
         }
     </style>
 </head>
-<body class="font-sans bg-secondary">
+<body class="relative">
+    <!-- Flying Food Elements -->
+    <img src="https://cdn-icons-png.flaticon.com/512/1404/1404945.png" class="food-flying w-32 left-10 top-1/4" style="animation-delay: 0s;">
+    <img src="https://cdn-icons-png.flaticon.com/512/706/706797.png" class="food-flying w-28 right-20 top-1/3" style="animation-delay: 1s;">
+    <img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png" class="food-flying w-24 left-1/4 top-2/3" style="animation-delay: 2s;">
+    <img src="https://cdn-icons-png.flaticon.com/512/3081/3081827.png" class="food-flying w-36 right-1/4 bottom-1/4" style="animation-delay: 3s;">
+    
     <!-- Navigation -->
-    <nav class="bg-dark text-white shadow-xl sticky top-0 z-50">
-        <div class="container mx-auto px-6 py-4 md:flex md:justify-between md:items-center">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center">
-                    <span class="text-primary font-heading text-4xl tracking-wider">4 BROTHERS</span>
-                </div>
-                <!-- Mobile menu button -->
-                <div class="md:hidden">
-                    <button id="menu-toggle" type="button" class="text-gray-300 hover:text-white focus:outline-none">
-                        <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </button>
-                </div>
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white bg-opacity-90 shadow-sm">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <span class="font-heading text-3xl gold-text-gradient">4 BROTHERS</span>
             </div>
             <div class="hidden md:flex items-center space-x-12">
-                <a href="#menu" class="nav-link text-lg hover:text-primary transition">MENU</a>
-                <a href="#about" class="nav-link text-lg hover:text-primary transition">ABOUT</a>
-                <a href="#contact" class="nav-link text-lg hover:text-primary transition">CONTACT</a>
-                <button id="cart-btn" class="relative">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 hover:text-primary transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                    <span id="cart-count" class="absolute -top-2 -right-2 bg-primary text-dark text-sm font-bold rounded-full h-6 w-6 flex items-center justify-center">0</span>
-                </button>
+                <a href="#home" class="nav-link text-lg">HOME</a>
+                <a href="#menu" class="nav-link text-lg">MENU</a>
+                <a href="#about" class="nav-link text-lg">ABOUT</a>
+                <a href="#contact" class="nav-link text-lg">CONTACT</a>
+                <button class="btn-gold text-dark font-bold py-2 px-6 rounded-full">ORDER NOW</button>
             </div>
-        </div>
-        <!-- Mobile menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-dark px-4 pt-2 pb-4 space-y-3">
-            <a href="#menu" class="block px-3 py-2 rounded-md text-lg hover:text-primary">MENU</a>
-            <a href="#about" class="block px-3 py-2 rounded-md text-lg hover:text-primary">ABOUT</a>
-            <a href="#contact" class="block px-3 py-2 rounded-md text-lg hover:text-primary">CONTACT</a>
+            <button class="md:hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero-section text-white flex items-center justify-center relative">
-        <div class="location-badge animate__animated animate__fadeInRight">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-1" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
-            </svg>
-            QUETTA
+    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
+        <div class="absolute inset-0 bg-black opacity-40 z-0"></div>
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover">
         </div>
-        <div class="container mx-auto text-center px-6">
-            <h1 class="text-5xl md:text-7xl font-heading mb-6 text-outline animate__animated animate__fadeInDown">4 BROTHERS</h1>
-            <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto animate__animated animate__fadeIn animate__delay-1s">Where every bite is a golden experience</p>
-            <div class="space-x-4 animate__animated animate__fadeInUp animate__delay-1s">
-                <a href="#menu" class="btn-primary hover:shadow-lg font-bold py-4 px-8 rounded-full text-lg inline-block">ORDER NOW</a>
-                <a href="#contact" class="border-2 border-white hover:bg-white hover:text-dark text-white font-bold py-4 px-8 rounded-full text-lg transition inline-block">CONTACT US</a>
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <h1 class="font-heading text-5xl md:text-8xl mb-6 text-white">GOLDEN <span class="gold-text-gradient">FLAVORS</span></h1>
+            <p class="text-xl md:text-2xl text-white mb-10 max-w-2xl mx-auto">Experience the richest pizzas and juiciest burgers in Quetta</p>
+            <div class="space-x-4">
+                <a href="#menu" class="btn-gold text-dark font-bold py-4 px-8 rounded-full text-lg inline-block">VIEW MENU</a>
+                <a href="#contact" class="border-2 border-white text-white font-bold py-4 px-8 rounded-full text-lg transition hover:bg-white hover:text-dark inline-block">BOOK A TABLE</a>
+            </div>
+            <div class="mt-20 scroll-down-arrow">
+                <a href="#menu" class="text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    </svg>
+                </a>
             </div>
         </div>
     </section>
 
     <!-- Menu Section -->
-    <section id="menu" class="container mx-auto px-6 py-20">
-        <h2 class="text-4xl md:text-5xl font-heading text-center mb-20 text-dark section-title animate__animated animate__fadeIn">OUR MENU</h2>
-        
-        <!-- Pizzas -->
-        <div class="mb-24">
-            <h3 class="text-3xl font-heading mb-8 text-dark px-2 flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-2 text-quetta" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                SIGNATURE PIZZAS
-            </h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Pizza Items -->
-                <div class="menu-card animate__animated animate__fadeInUp">
-                    <img src="https://images.unsplash.com/photo-1574126154517-d1e0d89ef734?q=80&w=1974&auto=format&fit=crop" alt="Margherita Pizza" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h4 class="text-2xl font-bold mb-2 text-dark">GOLDEN MARGHERITA</h4>
-                        <p class="text-gray-700 mb-4">San Marzano tomatoes, fresh mozzarella, basil, and our special golden crust</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xl font-bold text-dark">PKR 1,299</span>
-                            <button onclick="addToCart('Golden Margherita Pizza', 1299)" class="btn-primary hover:shadow-lg font-bold py-2 px-6 rounded-full text-sm">ADD TO CART</button>
+    <section id="menu" class="py-20 px-6 bg-white">
+        <div class="container mx-auto">
+            <h2 class="font-heading text-4xl md:text-6xl text-center mb-4 gold-text-gradient">OUR GOLDEN MENU</h2>
+            <p class="text-center text-lg mb-16 max-w-2xl mx-auto">Every dish crafted with premium ingredients and golden perfection</p>
+            
+            <!-- Pizzas -->
+            <div class="mb-24">
+                <h3 class="font-heading text-3xl mb-8 text-dark px-2 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    GOLD CRUST PIZZAS
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Pizza 1 -->
+                    <div class="menu-card bg-white rounded-xl shadow-lg overflow-hidden">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1574126154517-d1e0d89ef734?q=80&w=1974&auto=format&fit=crop" alt="Margherita Pizza" class="w-full h-64 object-cover">
+                            <div class="absolute top-4 right-4 bg-yellow-500 text-white font-bold py-1 px-3 rounded-full">BESTSELLER</div>
+                        </div>
+                        <div class="p-6">
+                            <h4 class="text-2xl font-bold mb-2">GOLDEN MARGHERITA</h4>
+                            <p class="text-gray-600 mb-4">San Marzano tomatoes, fresh mozzarella, basil, and our special gold crust</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xl font-bold">PKR 1,299</span>
+                                <button class="btn-gold text-dark font-bold py-2 px-6 rounded-full">ADD TO CART</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="menu-card animate__animated animate__fadeInUp animate__delay-1s">
-                    <img src="https://images.unsplash.com/photo-1595854341625-f33ee10dbf94?q=80&w=2070&auto=format&fit=crop" alt="Pepperoni Pizza" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h4 class="text-2xl font-bold mb-2 text-dark">CRUNCCEY PEPPERONI</h4>
-                        <p class="text-gray-700 mb-4">Double pepperoni, mozzarella, and our signature spicy golden sauce</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xl font-bold text-dark">PKR 1,499</span>
-                            <button onclick="addToCart('Crunccey Pepperoni Pizza', 1499)" class="btn-primary hover:shadow-lg font-bold py-2 px-6 rounded-full text-sm">ADD TO CART</button>
+                    
+                    <!-- Pizza 2 -->
+                    <div class="menu-card bg-white rounded-xl shadow-lg overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1595854341625-f33ee10dbf94?q=80&w=2070&auto=format&fit=crop" alt="Pepperoni Pizza" class="w-full h-64 object-cover">
+                        <div class="p-6">
+                            <h4 class="text-2xl font-bold mb-2">GOLDEN PEPPERONI</h4>
+                            <p class="text-gray-600 mb-4">Double pepperoni, mozzarella, and our signature spicy gold sauce</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xl font-bold">PKR 1,499</span>
+                                <button class="btn-gold text-dark font-bold py-2 px-6 rounded-full">ADD TO CART</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="menu-card animate__animated animate__fadeInUp animate__delay-2s">
-                    <img src="https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?q=80&w=1974&auto=format&fit=crop" alt="BBQ Chicken Pizza" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h4 class="text-2xl font-bold mb-2 text-dark">GOLDEN BBQ CHICKEN</h4>
-                        <p class="text-gray-700 mb-4">Honey BBQ sauce, grilled chicken, red onions, and cilantro on golden crust</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xl font-bold text-dark">PKR 1,599</span>
-                            <button onclick="addToCart('Golden BBQ Chicken Pizza', 1599)" class="btn-primary hover:shadow-lg font-bold py-2 px-6 rounded-full text-sm">ADD TO CART</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-card animate__animated animate__fadeInUp animate__delay-3s">
-                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=1981&auto=format&fit=crop" alt="Veggie Supreme Pizza" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h4 class="text-2xl font-bold mb-2 text-dark">GOLDEN VEGGIE</h4>
-                        <p class="text-gray-700 mb-4">Seasonal vegetables, feta cheese, and olive oil on our signature crust</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xl font-bold text-dark">PKR 1,399</span>
-                            <button onclick="addToCart('Golden Veggie Pizza', 1399)" class="btn-primary hover:shadow-lg font-bold py-2 px-6 rounded-full text-sm">ADD TO CART</button>
+                    
+                    <!-- Pizza 3 -->
+                    <div class="menu-card bg-white rounded-xl shadow-lg overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?q=80&w=1974&auto=format&fit=crop" alt="BBQ Chicken Pizza" class="w-full h-64 object-cover">
+                        <div class="p-6">
+                            <h4 class="text-2xl font-bold mb-2">GOLDEN BBQ CHICKEN</h4>
+                            <p class="text-gray-600 mb-4">Honey BBQ sauce, grilled chicken, red onions, and cilantro</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xl font-bold">PKR 1,599</span>
+                                <button class="btn-gold text-dark font-bold py-2 px-6 rounded-full">ADD TO CART</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Burgers -->
-        <div>
-            <h3 class="text-3xl font-heading mb-8 text-dark px-2 flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-2 text-quetta" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-                GOLDEN BURGERS
-            </h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Burger Items -->
-                <div class="menu-card animate__animated animate__fadeInUp">
-                    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1998&auto=format&fit=crop" alt="Classic Burger" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h4 class="text-2xl font-bold mb-2 text-dark">CRUNCCEY CLASSIC</h4>
-                        <p class="text-gray-700 mb-4">Juicy beef patty, lettuce, tomato, and our special sauce</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xl font-bold text-dark">PKR 899</span>
-                            <button onclick="addToCart('Crunccey Classic Burger', 899)" class="btn-primary hover:shadow-lg font-bold py-2 px-6 rounded-full text-sm">ADD TO CART</button>
+            
+            <!-- Burgers -->
+            <div>
+                <h3 class="font-heading text-3xl mb-8 text-dark px-2 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    GOLDEN BURGERS
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Burger 1 -->
+                    <div class="menu-card bg-white rounded-xl shadow-lg overflow-hidden">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1998&auto=format&fit=crop" alt="Classic Burger" class="w-full h-64 object-cover">
+                            <div class="absolute top-4 right-4 bg-yellow-500 text-white font-bold py-1 px-3 rounded-full">NEW</div>
+                        </div>
+                        <div class="p-6">
+                            <h4 class="text-2xl font-bold mb-2">GOLDEN CLASSIC</h4>
+                            <p class="text-gray-600 mb-4">Juicy beef patty, lettuce, tomato, and our special gold sauce</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xl font-bold">PKR 899</span>
+                                <button class="btn-gold text-dark font-bold py-2 px-6 rounded-full">ADD TO CART</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="menu-card animate__animated animate__fadeInUp animate__delay-1s">
-                    <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1965&auto=format&fit=crop" alt="B
+                    
+                    <!-- Burger 2 -->
+                    <div class="menu-card bg-white rounded-xl shadow-lg overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1965&auto=format&fit=crop" alt="Bacon Cheeseburger" class="w-full h-64 object-cover">
+                        <div class="p-6">
+                            <h4 class="text-2xl font-bold mb-2">GOLDEN BACON</h4>
+                            <p class="text-gray-600 mb-4">Beef patty, crispy bacon, cheddar, lettuce, and tomato</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xl font-bold">PKR 1,099</span>
+                                <button class="btn-gold text-dark
