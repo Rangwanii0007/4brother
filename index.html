@@ -1,865 +1,1095 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>4Brothers – Hot Pizza, Juicy Burgers</title>
-    <!-- Tailwind CSS CDN -->
+    <title>AdWatch Pro | Earn Points Watching Ads</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Oswald for headings, Inter for body -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for Cart Icon -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com; style-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline'; img-src 'self' https://storage.googleapis.com data:; connect-src 'self' https://www.gstatic.com; font-src 'self' https://cdnjs.cloudflare.com;">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
     <style>
-        /* Base styles for body and fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #000000; /* Pure Black Background */
-            color: #FFFFFF; /* Default text color */
-            overflow-x: hidden; /* Prevent horizontal scroll from animations */
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            position: relative; /* For pseudo-element background */
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
         }
-
-        /* Subtle Animated Background Grain/Noise */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        }
+        
+        .card {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .notification-popup {
+            animation: slideIn 0.5s forwards, fadeOut 0.5s 4.5s forwards;
+            transform: translateX(100%);
+        }
+        
+        @keyframes slideIn {
+            to { transform: translateX(0); }
+        }
+        
+        @keyframes fadeOut {
+            to { opacity: 0; visibility: hidden; }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(99, 102, 241, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+        }
+        
+        .progress-bar {
+            height: 6px;
             width: 100%;
+            background: #e2e8f0;
+        }
+        
+        .progress-fill {
             height: 100%;
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIj48ZmVDb2xvck1hdHJpeCBpbiJmbG9vZCIgdHlwZT0ibWF0cml4IiB2YWx1ZXM9IjAuMDUgMC4wNSAwLjA1IDAgMCAwLjA1IDAuMDUgMC4wNSAwIDAgMC4wNSAwLjA1IDAuMDUgMCAwIDAgMCAwIDEgMCIvPjxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjc1IiBudW1PY3RhdmVzPSI0IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PGZlQmxlbmQgbW9kZT0ic2NyZWVuIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI2EpIiBvcGFjaXR5PSIwLjMiLz48L3N2Z3I+');
-            background-size: 64px 64px;
-            pointer-events: none;
-            z-index: -3; /* Below parallax but above everything else */
-            animation: grain-animation 8s steps(10) infinite;
-        }
-
-        @keyframes grain-animation {
-            0% { transform: translate(0, 0); }
-            10% { transform: translate(-5%, -10%); }
-            20% { transform: translate(-15%, 10%); }
-            30% { transform: translate(7%, -15%); }
-            40% { transform: translate(-10%, 5%); }
-            50% { transform: translate(-20%, -5%); }
-            60% { transform: translate(15%, 0); }
-            70% { transform: translate(0, 10%); }
-            80% { transform: translate(10%, -10%); }
-            90% { transform: translate(-5%, 15%); }
-            100% { transform: translate(0, 0); }
-        }
-
-        /* Custom font for headings - Oswald for bold, vintage-modern feel */
-        .font-heading {
-            font-family: 'Oswald', sans-serif;
-        }
-
-        /* Hero section specific styles */
-        .hero-section {
-            background: linear-gradient(180deg, #1A1A1A 0%, #000000 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            padding: 2rem;
-            background-image: url('https://placehold.co/1920x1080/0A0A0A/000000?text=Subtle+Abstract+Texture');
-            background-blend-mode: overlay;
-            background-size: cover;
-            background-position: center;
-        }
-
-        /* Hero Text/Logo Glow */
-        .hero-title-glow {
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.3), 0 0 30px rgba(255, 215, 0, 0.1);
-            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
-            animation: pulse-glow 2s infinite alternate;
-        }
-
-        @keyframes pulse-glow {
-            from { filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6)) brightness(1); }
-            to { filter: drop-shadow(0 0 25px rgba(255, 215, 0, 1)) brightness(1.2); }
-        }
-
-        /* Sticky header background on scroll */
-        .header-scrolled {
-            background-color: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(12px) saturate(150%); /* More blur and saturation */
-            -webkit-backdrop-filter: blur(12px) saturate(150%);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7); /* Stronger shadow */
-        }
-
-        /* CTA Button Floating Icons Animation */
-        @keyframes floatEffect {
-            0% { transform: translateY(0px) rotate(0deg); }
-            25% { transform: translateY(-5px) rotate(2deg); }
-            50% { transform: translateY(0px) rotate(0deg); }
-            75% { transform: translateY(-5px) rotate(-2deg); }
-            100% { transform: translateY(0px) rotate(0deg); }
-        }
-        .float-animation {
-            animation: floatEffect 3s ease-in-out infinite;
-        }
-        .float-animation.delay-1 { animation-delay: 0.15s; }
-        .float-animation.delay-2 { animation-delay: 0.3s; }
-
-        /* Universal Fade In Up Animation for Sections */
-        .fade-in-up {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-        .fade-in-up.animate-in {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Scroll Animation Elements (for intro) */
-        .flying-element {
-            position: absolute;
-            opacity: 0;
-            transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* More bouncy curve */
-            z-index: 10;
-            filter: drop-shadow(0 0 20px rgba(255, 184, 0, 0.8)); /* Stronger glow */
-        }
-
-        /* Pizza from Left */
-        #pizzaSlice {
-            top: 40%;
-            left: -450px; /* Start even further off-screen */
-            transform: translateY(-50%) rotate(-45deg) scale(0.6); /* More initial rotation/smaller */
-            width: 300px; /* Even larger base size */
-            height: auto;
-        }
-        #pizzaSlice.animate-in {
-            left: 5%;
-            opacity: 1;
-            transform: translateY(-50%) rotate(0deg) scale(1.1); /* Slightly overshoots then settles */
-        }
-        #pizzaSlice.animate-in {
-            animation: pizza-entrance 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-        }
-        @keyframes pizza-entrance {
-            0% { left: -450px; opacity: 0; transform: translateY(-50%) rotate(-45deg) scale(0.6); }
-            70% { left: 8%; opacity: 1; transform: translateY(-50%) rotate(5deg) scale(1.15); } /* Overshoot */
-            100% { left: 5%; opacity: 1; transform: translateY(-50%) rotate(0deg) scale(1); }
-        }
-
-
-        /* Burger from Right */
-        #burger {
-            top: 60%;
-            right: -450px; /* Start even further off-screen */
-            transform: translateY(-50%) rotate(45deg) scale(0.6); /* More initial rotation/smaller */
-            width: 300px; /* Even larger base size */
-            height: auto;
-        }
-        #burger.animate-in {
-            right: 5%;
-            opacity: 1;
-            transform: translateY(-50%) rotate(0deg) scale(1.1); /* Slightly overshoots then settles */
-        }
-        #burger.animate-in {
-            animation: burger-entrance 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-        }
-        @keyframes burger-entrance {
-            0% { right: -450px; opacity: 0; transform: translateY(-50%) rotate(45deg) scale(0.6); }
-            70% { right: 8%; opacity: 1; transform: translateY(-50%) rotate(-5deg) scale(1.15); } /* Overshoot */
-            100% { right: 5%; opacity: 1; transform: translateY(-50%) rotate(0deg) scale(1); }
-        }
-
-
-        /* Deal Text Animation */
-        .deal-text {
-            opacity: 0;
-            transform: translateY(50px) scale(0.7); /* More pronounced initial transform */
-            transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Bouncy reveal */
-        }
-        .deal-text.animate-in {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-        /* Parallax background effect */
-        .parallax-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('https://placehold.co/1920x1080/0A0A0A/333333?text=Subtle+Geometric+Pattern'); /* More abstract/modern pattern */
-            background-blend-mode: soft-light; /* Subtle blending */
-            background-size: cover;
-            background-position: center;
-            z-index: -2;
-            transition: transform 0.08s linear; /* Slightly faster parallax */
-            will-change: transform;
-        }
-
-        /* Deal Card hover effect (Image float, text subtle transform) */
-        .deal-card-content {
-            transition: transform 0.3s ease;
-        }
-        .deal-card:hover .deal-card-content {
-            transform: translateY(-15px); /* Card content lifts more prominently */
-        }
-        .deal-card-image {
-            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4); /* Stronger initial shadow */
-        }
-        .deal-card:hover .deal-card-image {
-            transform: scale(1.1) rotate(5deg); /* Image scales and rotates more aggressively */
-            box-shadow: 0 15px 35px rgba(0,0,0,0.7); /* Much stronger shadow on hover */
-        }
-
-        /* Glowing Red for offers/prices */
-        .text-red-highlight {
-            color: #FF4444;
-            filter: drop-shadow(0 0 10px rgba(255, 68, 68, 0.9)) saturate(150%); /* More intense glow & saturation */
-        }
-
-        /* Glassmorphism for buttons/cards */
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.05); /* Even more subtle transparency */
-            backdrop-filter: blur(25px) saturate(200%); /* Max blur, max saturation */
-            -webkit-backdrop-filter: blur(25px) saturate(200%);
-            border: 1px solid rgba(255, 255, 255, 0.1); /* Finer border */
-            box-shadow: 0 15px 50px 0 rgba(0, 0, 0, 0.5); /* Very strong initial shadow */
-            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1); /* Smoother, more elegant transition */
-        }
-        .glass-effect:hover {
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 70px 0 rgba(0, 0, 0, 0.8); /* Extreme shadow on hover */
-        }
-
-        /* Button Hover Effects - More Advanced */
-        .button-primary {
-            position: relative;
-            z-index: 1;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-        }
-        .button-primary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-            z-index: -1;
-        }
-        .button-primary:hover::before {
-            left: 100%;
-        }
-        .button-primary:hover {
-            transform: translateY(-3px) scale(1.02); /* Slight lift and scale */
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4), 0 0 20px rgba(255, 184, 0, 0.7); /* Shadow with subtle glow */
-        }
-
-        /* Custom scrollbar for better aesthetics */
-        ::-webkit-scrollbar {
-            width: 10px; /* Wider scrollbar */
-        }
-        ::-webkit-scrollbar-track {
-            background: #0A0A0A; /* Darker track */
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #FFD700; /* Brighter thumb */
-            border-radius: 5px; /* More rounded */
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #FFE800; /* Lighter on hover */
-        }
-
-        /* Cart Icon Animation */
-        @keyframes bounceIn {
-            0% { transform: scale(0); opacity: 0; }
-            50% { transform: scale(1.3); opacity: 1; } /* More bounce */
-            100% { transform: scale(1); }
-        }
-        .cart-bounce {
-            animation: bounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncier animation */
-        }
-
-        /* Special Offer Card Animations - More refined */
-        .offer-card {
-            opacity: 0;
-            transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.8s ease-in;
-        }
-        .offer-card.slide-in-left {
-            transform: translateX(-200px) scale(0.8) rotateY(30deg); /* More dramatic start */
-            transform-origin: left center;
-        }
-        .offer-card.slide-in-right {
-            transform: translateX(200px) scale(0.8) rotateY(-30deg); /* More dramatic start */
-            transform-origin: right center;
-        }
-        .offer-card.animate-in-offer {
-            opacity: 1;
-            transform: translateX(0) scale(1) rotateY(0deg);
-        }
-
-        /* Mobile specific adjustments */
-        @media (max-width: 768px) {
-            #pizzaSlice, #burger {
-                width: 180px; /* Slightly larger on mobile for impact */
-            }
-            #pizzaSlice.animate-in {
-                left: 0; /* Align more centrally */
-                transform: translateY(-50%) rotate(0deg) scale(0.9);
-            }
-            #burger.animate-in {
-                right: 0; /* Align more centrally */
-                transform: translateY(-50%) rotate(0deg) scale(0.9);
-            }
-            .hero-section h1 {
-                font-size: 4rem; /* Larger heading */
-            }
-            .hero-section p {
-                font-size: 1.2rem; /* Larger tagline */
-            }
-            .deal-text {
-                font-size: 3rem; /* Even larger on mobile */
-            }
-            .offer-card.slide-in-left,
-            .offer-card.slide-in-right {
-                transform: translateX(0) scale(0.9); /* No side slide on small screens */
-                transform-origin: center center; /* Reset transform origin for mobile */
-            }
+            background: linear-gradient(90deg, #10b981 0%, #3b82f6 100%);
+            transition: width 0.3s ease;
         }
     </style>
 </head>
-<body class="bg-black text-white">
-
-    <!-- Parallax Background Layer -->
-    <div class="parallax-bg" id="parallaxBg"></div>
-
-    <!-- Main Navigation Bar -->
-    <nav class="fixed top-0 left-0 right-0 p-6 z-50 transition-all duration-500" id="mainNav">
-        <div class="container mx-auto flex justify-between items-center">
-            <!-- Logo -->
-            <a href="#hero" class="text-4xl md:text-5xl font-heading text-[#FFD700] tracking-wide hero-title-glow">4Brothers</a>
-            <!-- Desktop Navigation Links -->
-            <div class="space-x-8 hidden md:flex items-center text-lg font-semibold">
-                <a href="#hero" class="text-white hover:text-[#FFD700] transition-colors duration-300">Home</a>
-                <a href="#menu" class="text-white hover:text-[#FFD700] transition-colors duration-300">Menu</a>
-                <a href="#special-offers" class="text-white hover:text-[#FFD700] transition-colors duration-300">Offers</a>
-                <a href="#contact" class="text-white hover:text-[#FFD700] transition-colors duration-300">Contact</a>
-                <!-- Cart Icon -->
-                <div class="relative ml-6">
-                    <button id="cartButton" class="text-white hover:text-[#FFD700] transition-colors duration-300 relative focus:outline-none">
-                        <i class="fas fa-shopping-cart text-2xl"></i>
-                        <span id="cartCount" class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center transform scale-0 origin-center transition-transform duration-300">0</span>
-                    </button>
-                </div>
+<body class="min-h-screen">
+    <!-- Top Navigation -->
+    <nav class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-ad text-2xl"></i>
+                <span class="text-xl font-bold">AdWatch Pro</span>
             </div>
-            <!-- Mobile Menu Button (Hamburger) -->
-            <button class="md:hidden text-white focus:outline-none z-50" id="mobileMenuButton" aria-label="Open Mobile Menu">
-                <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-            </button>
+            <div class="flex items-center space-x-4">
+                <div class="hidden md:flex items-center space-x-4">
+                    <span class="font-medium">Welcome, <span id="username">Guest</span></span>
+                    <span class="bg-indigo-700 px-3 py-1 rounded-full">
+                        <i class="fas fa-coins mr-1"></i>
+                        <span id="userPoints">0</span> points
+                    </span>
+                </div>
+                <button id="loginBtn" class="bg-white text-indigo-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-100 transition">Login/Signup</button>
+            </div>
         </div>
     </nav>
 
-    <!-- Mobile Navigation Overlay (Hidden by default) -->
-    <div id="mobileMenuOverlay" class="fixed inset-0 bg-black bg-opacity-95 z-40 flex flex-col items-center justify-center space-y-10 text-3xl font-heading transition-transform transform translate-x-full md:hidden">
-        <a href="#hero" class="text-white hover:text-[#FFD700] transition-colors duration-300" onclick="closeMobileMenu()">Home</a>
-        <a href="#menu" class="text-white hover:text-[#FFD700] transition-colors duration-300" onclick="closeMobileMenu()">Menu</a>
-        <a href="#special-offers" class="text-white hover:text-[#FFD700] transition-colors duration-300" onclick="closeMobileMenu()">Offers</a>
-        <a href="#contact" class="text-white hover:text-[#FFD700] transition-colors duration-300" onclick="closeMobileMenu()">Contact</a>
-        <!-- Mobile Cart Icon -->
-        <div class="relative mt-8">
-            <button id="mobileCartButton" class="text-white hover:text-[#FFD700] transition-colors duration-300 relative focus:outline-none">
-                <i class="fas fa-shopping-cart text-3xl"></i>
-                <span id="mobileCartCount" class="absolute -top-2 -right-2 bg-red-600 text-white text-base font-bold rounded-full h-7 w-7 flex items-center justify-center transform scale-0 origin-center transition-transform duration-300">0</span>
-            </button>
+    <!-- Quick Stats Banner -->
+    <div class="bg-indigo-50 py-4">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="text-center md:text-left mb-2 md:mb-0">
+                    <span class="text-sm font-medium text-indigo-600">TODAY'S TOTAL REWARDS</span>
+                    <div class="text-2xl font-bold text-indigo-800">$12,456</div>
+                </div>
+                <div class="flex space-x-6 text-center">
+                    <div>
+                        <span class="text-sm font-medium text-indigo-600">ACTIVE USERS</span>
+                        <div class="text-xl font-bold text-indigo-800">3,124</div>
+                    </div>
+                    <div>
+                        <span class="text-sm font-medium text-indigo-600">ADS WATCHED</span>
+                        <div class="text-xl font-bold text-indigo-800">28,761</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Hero Section -->
-    <section class="hero-section" id="hero">
-        <div class="relative z-10 p-6 max-w-4xl mx-auto">
-            <h1 class="text-6xl md:text-9xl font-heading text-[#FFD700] mb-4 drop-shadow-2xl leading-tight hero-title-glow">4Brothers</h1>
-            <p class="text-xl md:text-3xl text-gray-200 mb-10 max-w-2xl mx-auto leading-relaxed animate-fade-in delay-200">Hot Pizza, Juicy Burgers – Taste the Tradition!</p>
-            <button class="bg-[#FFB800] text-black px-12 py-5 rounded-full text-xl md:text-2xl font-bold uppercase button-primary shadow-2xl relative group focus:outline-none">
-                Order Now
-                <span class="absolute right-4 top-1/2 -translate-y-1/2 flex items-center space-x-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 transform -translate-x-full">
-                    <svg class="w-7 h-7 text-black float-animation delay-1" fill="currentColor" viewBox="0 0 24 24"><path d="M13.5 4.5a.75.75 0 00-1.5 0v3.024a3 3 0 00-1.854 1.716L5.343 14.25H2.25a.75.75 0 000 1.5h3.633a.75.75 0 00.672-.444l1.378-2.755 2.597 1.164a.75.75 0 001.213-.538V12a6.002 6.002 0 015.145-5.918 6 6 0 00-5.145-5.918zm0 15a.75.75 0 00-1.5 0v.75a.75.75 0 001.5 0v-.75zM8.25 18a.75.75 0 00-1.5 0v.75a.75.75 0 001.5 0v-.75zM17.25 18a.75.75 0 00-1.5 0v.75a.75.75 0 001.5 0v-.75z"></path><path fill-rule="evenodd" d="M10 18.75a.75.75 0 00-1.5 0v.75a.75.75 0 001.5 0v-.75zM12 21a.75.75 0 00-1.5 0v.75a.75.75 0 001.5 0v-.75zM14 18.75a.75.75 0 00-1.5 0v.75a.75.75 0 001.5 0v-.75zM15.75 12a.75.75 0 00-1.5 0v.75a.75.75 0 001.5 0v-.75z" clip-rule="evenodd"></path></svg>
-                    <svg class="w-8 h-8 text-black float-animation delay-2" fill="currentColor" viewBox="0 0 24 24"><path d="M2.5 17.5a.5.5 0 01.5-.5h19a.5.5 0 01.5.5v1a.5.5 0 01-.5.5h-19a.5.5 0 01-.5-.5v-1zM2.5 13.5a.5.5 0 01.5-.5h19a.5.5 0 01.5.5v1a.5.5 0 01-.5.5h-19a.5.5 0 01-.5-.5v-1zM2.5 9.5a.5.5 0 01.5-.5h19a.5.5 0 01.5.5v1a.5.5 0 01-.5.5h-19a.5.5 0 01-.5-.5v-1zM2.5 5.5a.5.5 0 01.5-.5h19a.5.5 0 01.5.5v1a.5.5 0 01-.5.5h-19a.5.5 0 01-.5-.5v-1z"></path></svg>
-                </span>
-            </button>
-        </div>
-    </section>
-
-    <!-- Scroll Animation Trigger Section (Visual separator with flying items) -->
-    <section class="h-[100vh] bg-black flex flex-col justify-center items-center text-center relative overflow-hidden py-16" id="scroll-animation-trigger">
-        <!-- Flying Pizza (SVG for better quality) -->
-        <svg id="pizzaSlice" class="flying-element" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21.2 15.6l-3.8-3.8c-1.1-1.1-2.2-1.6-3.6-1.6h-2.1c-.8 0-1.5.7-1.5 1.5v2.1c0 1.4-.5 2.5-1.6 3.6L8.4 21.2C8 21.6 7.3 22 6.5 22h-1c-.8 0-1.5-.7-1.5-1.5V19c0-.8.7-1.5 1.5-1.5h1c.8 0 1.5-.7 1.5-1.5v-1c0-.8-.7-1.5-1.5-1.5H5c-.8 0-1.5-.7-1.5-1.5V12c0-.8.7-1.5 1.5-1.5h1c.8 0 1.5-.7 1.5-1.5V8c0-.8-.7-1.5-1.5-1.5H5c-.8 0-1.5-.7-1.5-1.5V3.5c0-.8.7-1.5 1.5-1.5h1c.8 0 1.5-.7 1.5-1.5V0c0-.8-.7-1.5-1.5-1.5H0"></path>
-            <circle cx="12" cy="12" r="10" stroke="#FFD700" stroke-width="2" fill="none"/>
-            <path d="M12 2C6.48 2 2 6.48 2 12c0 1.5.3 2.9.8 4.2L12 12V2z" fill="#FFB800"/>
-            <path d="M12 2v10l9.2 4.2c.5-1.3.8-2.7.8-4.2C22 6.48 17.52 2 12 2z" fill="#FFD700"/>
-            <circle cx="12" cy="12" r="2" fill="#FF4444"/>
-            <circle cx="16" cy="7" r="1" fill="#FF4444"/>
-            <circle cx="7" cy="16" r="1" fill="#FF4444"/>
-        </svg>
-
-        <!-- Flying Burger (SVG for better quality) -->
-        <svg id="burger" class="flying-element" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2s10 4.477 10 10z" fill="#D32F2F"/>
-            <path d="M12 22a9 9 0 009-9V11c0-4.97-4.03-9-9-9S3 6.03 3 11v2a9 9 0 009 9z" fill="#FBC02D"/>
-            <path d="M12 2a9 9 0 00-9 9v2a9 9 0 0018 0v-2a9 9 0 00-9-9z" fill="#FFD700"/>
-            <circle cx="8" cy="8" r="1" fill="#8B4513"/>
-            <circle cx="16" cy="8" r="1" fill="#8B4513"/>
-            <circle cx="12" cy="16" r="1" fill="#8B4513"/>
-        </svg>
-
-        <p class="text-3xl md:text-5xl font-heading text-[#FFD700] deal-text z-20 max-w-2xl px-4 fade-in-up">Set Deals You Can’t Resist!</p>
-    </section>
-
-    <!-- Special Offers Section -->
-    <section class="py-16 md:py-24 bg-black text-white" id="special-offers">
-        <div class="container mx-auto px-6">
-            <h2 class="text-5xl md:text-7xl font-heading text-center text-[#FFD700] mb-16 drop-shadow-lg fade-in-up">Limited Time Special Offers!</h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                <!-- Offer Card 1: Pizza Party Pack -->
-                <div class="bg-[#1A1A1A] rounded-2xl p-6 shadow-xl border border-gray-800 flex flex-col items-center text-center deal-card glass-effect offer-card">
-                    <div class="deal-card-content w-full">
-                        <img src="https://placehold.co/400x250/FFB800/000000?text=Pizza+Party+Pack" alt="Pizza Party Pack" class="w-full h-48 object-cover rounded-xl mb-6 deal-card-image">
-                        <h3 class="text-3xl font-heading text-white mb-2">Pizza Party Pack</h3>
-                        <p class="text-lg text-gray-400 mb-4">Any 2 Large Pizzas + 1.5L Drink</p>
-                        <p class="text-5xl font-extrabold text-red-highlight mb-6 animate-pulse">Rs. 1999 <span class="text-gray-500 line-through text-3xl ml-2">Rs. 2400</span></p>
-                        <button class="bg-[#FFB800] text-black px-8 py-3 rounded-full uppercase font-semibold text-lg button-primary shadow-md add-to-cart-btn">Grab Deal!</button>
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Column -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Premium Link Section -->
+                <div id="premiumLinkSection" class="card bg-white rounded-xl p-6 shadow-md border border-yellow-300 pulse">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold text-gray-800 flex items-center">
+                            <i class="fas fa-crown text-yellow-500 mr-2"></i>
+                            Special Offer - Earn 100 Points!
+                        </h2>
+                        <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-1 rounded">
+                            Every 2 minutes
+                        </span>
+                    </div>
+                    <p class="text-gray-600 mb-4">Watch premium ads to earn <span class="font-bold text-yellow-600">100 points</span> every 2 minutes!</p>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <span class="text-gray-500 text-sm">Premium Partner Link 1:</span>
+                                <div class="font-medium">profitableratecpm.com/v30v9iyyx</div>
+                                <button id="visitPremiumBtn1" 
+                                    class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md font-medium transition flex items-center justify-center w-full mt-2 disabled:opacity-75" 
+                                    data-locked="false"
+                                    data-last-click="0">
+                                    <span class="mr-2" id="premiumBtnText1">Visit Now</span>
+                                    <i class="fas fa-external-link-alt"></i>
+                                </button>
+                                <div id="cooldown1" class="text-xs text-gray-500 mt-1 hidden"><i class="fas fa-lock mr-1"></i> Available in: <span id="countdown1">2:00</span></div>
+                            </div>
+                            <div>
+                                <span class="text-gray-500 text-sm">Premium Partner Link 2:</span>
+                                <div class="font-medium">profitableratecpm.com/i3gkm6gh</div>
+                                <button id="visitPremiumBtn2" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md font-medium transition flex items-center justify-center w-full mt-2" data-locked="false">
+                                    <span class="mr-2" id="premiumBtnText2">Visit Now</span>
+                                    <i class="fas fa-external-link-alt"></i>
+                                </button>
+                                <div id="cooldown2" class="text-xs text-gray-500 mt-1 hidden"><i class="fas fa-lock mr-1"></i> Available in: <span id="countdown2">2:00</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center mt-4 text-sm text-gray-500">
+                        <span><i class="fas fa-user-shield mr-1"></i> Premium offers available every 2 minutes</span>
                     </div>
                 </div>
 
-                <!-- Offer Card 2: Burger Bonanza Duo -->
-                <div class="bg-[#1A1A1A] rounded-2xl p-6 shadow-xl border border-gray-800 flex flex-col items-center text-center deal-card glass-effect offer-card">
-                    <div class="deal-card-content w-full">
-                        <img src="https://placehold.co/400x250/FFB800/000000?text=Burger+Bonanza+Duo" alt="Burger Bonanza Duo" class="w-full h-48 object-cover rounded-xl mb-6 deal-card-image">
-                        <h3 class="text-3xl font-heading text-white mb-2">Burger Bonanza Duo</h3>
-                        <p class="text-lg text-gray-400 mb-4">Any 2 Burgers + 2 Fries</p>
-                        <p class="text-5xl font-extrabold text-red-highlight mb-6 animate-pulse">Rs. 999 <span class="text-gray-500 line-through text-3xl ml-2">Rs. 1200</span></p>
-                        <button class="bg-[#FFB800] text-black px-8 py-3 rounded-full uppercase font-semibold text-lg button-primary shadow-md add-to-cart-btn">Grab Deal!</button>
+                <!-- My Links Section -->
+                <div id="myLinksSection" class="card bg-white rounded-xl p-6 shadow-md">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold text-gray-800 flex items-center">
+                            <i class="fas fa-link mr-2 text-indigo-600"></i>
+                            My Links
+                        </h2>
+                        <button id="addLinkBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md font-medium transition flex items-center">
+                            <i class="fas fa-plus mr-2"></i> Add Link
+                        </button>
+                    </div>
+                    
+                    <div id="linksList" class="space-y-3">
+                        <div class="border-b pb-2 border-gray-200">
+                            <p class="text-sm text-gray-400 mb-1 flex items-center">
+                                <span>No links added yet</span>
+                            </p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Offer Card 3: Mega Family Combo -->
-                <div class="bg-[#1A1A1A] rounded-2xl p-6 shadow-xl border border-gray-800 flex flex-col items-center text-center deal-card glass-effect offer-card">
-                    <div class="deal-card-content w-full">
-                        <img src="https://placehold.co/400x250/FFB800/000000?text=Mega+Family+Combo" alt="Mega Family Combo" class="w-full h-48 object-cover rounded-xl mb-6 deal-card-image">
-                        <h3 class="text-3xl font-heading text-white mb-2">Mega Family Combo</h3>
-                        <p class="text-lg text-gray-400 mb-4">1 Large Pizza + 2 Zinger Burgers + Fries & Drinks</p>
-                        <p class="text-5xl font-extrabold text-red-highlight mb-6 animate-pulse">Rs. 1800 <span class="text-gray-500 line-through text-3xl ml-2">Rs. 2200</span></p>
-                        <button class="bg-[#FFB800] text-black px-8 py-3 rounded-full uppercase font-semibold text-lg button-primary shadow-md add-to-cart-btn">Grab Deal!</button>
+                <!-- Other Users Links Section -->
+                <div id="otherLinksSection" class="card bg-white rounded-xl p-6 shadow-md">
+                    <h2 class="text-xl font-bold text-gray-800 flex items-center mb-4">
+                        <i class="fas fa-users mr-2 text-blue-500"></i>
+                        Links From Other Users
+                    </h2>
+                    <div id="otherUserLinksList" class="space-y-3">
+                        <div class="text-sm text-gray-400 mb-1 italic">
+                            Links will appear here when users share them
+                        </div>
                     </div>
                 </div>
 
-            </div>
-        </div>
-    </section>
-
-    <!-- Menu Section (Product Showcase) -->
-    <section class="py-16 md:py-24 bg-black text-white" id="menu">
-        <div class="container mx-auto px-6">
-            <h2 class="text-5xl md:text-7xl font-heading text-center text-[#FFD700] mb-16 drop-shadow-lg fade-in-up">Explore Our Delicious Menu</h2>
-
-            <!-- Pizza Category -->
-            <h3 class="text-4xl font-heading text-[#FFD700] text-center mb-10 mt-16 drop-shadow-md fade-in-up">Pizzas</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-20">
-                <!-- Pizza Card 1: Margherita Masterpiece -->
-                <div class="bg-[#1A1A1A] rounded-2xl p-6 shadow-xl border border-gray-800 flex flex-col items-center text-center deal-card glass-effect fade-in-up">
-                    <div class="deal-card-content w-full">
-                        <img src="https://placehold.co/400x250/FFB800/000000?text=Margherita+Pizza" alt="Margherita Masterpiece" class="w-full h-48 object-cover rounded-xl mb-6 deal-card-image">
-                        <h3 class="text-3xl font-heading text-white mb-2">Margherita Masterpiece</h3>
-                        <p class="text-lg text-gray-400 mb-4">Classic tomato, fresh mozzarella & basil.</p>
-                        <p class="text-5xl font-extrabold text-red-highlight mb-6 animate-pulse">Rs. 750</p>
-                        <button class="bg-[#FFB800] text-black px-8 py-3 rounded-full uppercase font-semibold text-lg button-primary shadow-md add-to-cart-btn">Add to Cart</button>
+                <!-- User Links Section - Watch & Earn -->
+                <div class="card bg-white rounded-xl p-6 shadow-md">
+                    <h2 class="text-xl font-bold text-gray-800 flex items-center mb-4">
+                        <i class="fas fa-bolt mr-2 text-green-600"></i>
+                        Watch Links & Earn Points
+                    </h2>
+                    <p class="text-gray-600 mb-4">Watch other users' links to earn points. The owner gets traffic when you watch!</p>
+                    <div id="userLinksToWatch" class="space-y-4">
+                        <!-- User links will appear here -->
+                        <div class="text-sm text-gray-400 italic">Links submitted by other users will appear here</div>
                     </div>
                 </div>
 
-                <!-- Pizza Card 2: Pepperoni Power -->
-                <div class="bg-[#1A1A1A] rounded-2xl p-6 shadow-xl border border-gray-800 flex flex-col items-center text-center deal-card glass-effect fade-in-up">
-                    <div class="deal-card-content w-full">
-                        <img src="https://placehold.co/400x250/FFB800/000000?text=Pepperoni+Pizza" alt="Pepperoni Power" class="w-full h-48 object-cover rounded-xl mb-6 deal-card-image">
-                        <h3 class="text-3xl font-heading text-white mb-2">Pepperoni Power</h3>
-                        <p class="text-lg text-gray-400 mb-4">Loaded with spicy pepperoni slices & cheese.</p>
-                        <p class="text-5xl font-extrabold text-red-highlight mb-6 animate-pulse">Rs. 890</p>
-                        <button class="bg-[#FFB800] text-black px-8 py-3 rounded-full uppercase font-semibold text-lg button-primary shadow-md add-to-cart-btn">Add to Cart</button>
+                <!-- Watch Ads Section -->
+                <div class="card bg-white rounded-xl p-6 shadow-md">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold text-gray-800 flex items-center">
+                            <i class="fas fa-ad mr-2 text-green-600"></i>
+                            Watch Ads & Earn Points
+                        </h2>
+                        <div class="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">
+                            <i class="fas fa-coins mr-1"></i> 10 pts per ad
+                        </div>
                     </div>
-                </div>
-
-                <!-- Pizza Card 3: Chicken Fajita Fiesta -->
-                <div class="bg-[#1A1A1A] rounded-2xl p-6 shadow-xl border border-gray-800 flex flex-col items-center text-center deal-card glass-effect fade-in-up">
-                    <div class="deal-card-content w-full">
-                        <img src="https://placehold.co/400x250/FFB800/000000?text=Chicken+Fajita+Pizza" alt="Chicken Fajita Fiesta" class="w-full h-48 object-cover rounded-xl mb-6 deal-card-image">
-                        <h3 class="text-3xl font-heading text-white mb-2">Chicken Fajita Fiesta</h3>
-                        <p class="text-lg text-gray-400 mb-4">Grilled chicken, bell peppers & onions.</p>
-                        <p class="text-5xl font-extrabold text-red-highlight mb-6 animate-pulse">Rs. 1050</p>
-                        <button class="bg-[#FFB800] text-black px-8 py-3 rounded-full uppercase font-semibold text-lg button-primary shadow-md add-to-cart-btn">Add to Cart</button>
+                    
+                    <p class="text-gray-600 mb-4">Watch these ads completely to earn 10 points each. More ads will appear as you watch.</p>
+                    
+                    <div id="adsContainer" class="space-y-4">
+                        <!-- Ad items will be inserted here by JavaScript -->
+                        
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center space-x-3">
+                                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1d2ceb69-66ba-4ac5-9077-3a52df4ba0ae.png" alt="Brand logo for FashionFusion showing minimalist clothing graphic" class="rounded-full w-10 h-10 object-cover">
+                                    <div>
+                                        <div class="font-medium">FashionFusion</div>
+                                        <div class="text-xs text-gray-500">Sponsored • Ends in 12h</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="relative aspect-video bg-gray-100 rounded overflow-hidden mb-3">
+                                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/7805cc9f-8a45-464a-9fa0-61d3a560d0bf.png" alt="Promotional video frame showing summer collection of stylish clothing with models wearing the latest fashion trends" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <button class="bg-black bg-opacity-50 text-white rounded-full w-16 h-16 flex items-center justify-center hover:bg-opacity-70 transition">
+                                        <i class="fas fa-play text-2xl"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            
+                            <div class="flex justify-between items-center mt-2 text-sm">
+                                <span class="text-gray-500">Watch complete ad to earn 10 points</span>
+                                <div class="flex items-center">
+                                    <button class="watch-now-btn bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-1 rounded text-sm font-medium transition flex items-center">
+                                        <i class="fas fa-play-circle mr-2"></i>
+                                        Watch Now
+                                    </button>
+                                    <div class="ml-3 text-xs text-indigo-600">
+                                        <i class="fas fa-bolt"></i>
+                                        <span>10 XP</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-
-                <!-- Pizza Card 4: Veggie Delight -->
-                <div class="bg-[#1A1A1A] rounded-2xl p-6 shadow-xl border border-gray-800 flex flex-col items-center text-center deal-card glass-effect fade-in-up">
-                    <div class="deal-card-content w-full">
-                        <img src="https://placehold.co/400x250/FFB800/000000?text=Veggie+Pizza" alt="Veggie Delight" class="w-full h-48 object-cover rounded-xl mb-6 deal-card-image">
-                        <h3 class="text-3xl font-heading text-white mb-2">Veggie Delight</h3>
-                        <p class="text-lg text-gray-400 mb-4">A garden of fresh vegetables & olives.</p>
-                        <p class="text-5xl font-extrabold text-red-highlight mb-6 animate-pulse">Rs. 700</p>
-                        <button class="bg-[#FFB800] text-black px-8 py-3 rounded-full uppercase font-semibold text-lg button-primary shadow-md add-to-cart-btn">Add to Cart</button>
-                    </div>
-                </div>
-
-                <!-- Pizza Card 5: BBQ Chicken Feast -->
-                <div class="bg-[#1A1A1A] rounded-2xl p-6 shadow-xl border border-gray-800 flex flex-col items-center text-center deal-card glass-effect fade-in-up">
-                    <div class="deal-card-content w-full">
-                        <img src="https://placehold.co/400x250/FFB800/000000?text=BBQ+Chicken+Pizza" alt="BBQ Chicken Feast" class="w-full h-48 object-cover rounded-xl mb-6 deal-card-image">
-                        <h3 class="text-3xl font-heading text-white mb-2">BBQ Chicken Feast</h3>
-                        <p class="text-lg text-gray-400 mb-4">Smoky BBQ chicken with a tangy twist.</p>
-                        <p class="text-5xl font-extrabold text-red-highlight mb-6 animate-pulse">Rs. 1150</p>
-                        <button class="bg-[#FFB800] text-black px-8 py-3 rounded-full uppercase font-semibold text-lg button-primary shadow-md add-to-cart-btn">Add to Cart</button>
-                    </div>
-                </div>
-
-                <!-- Pizza Card 6: Four Cheese Fusion -->
-                <div class="bg-[#1A1A1A] rounded-2xl p-6 shadow-xl border border-gray-800 flex flex-col items-center text-center deal-card glass-effect fade-in-up">
-                    <div class="deal-card-content w-full">
-                        <img src="https://placehold.co/400x250/FFB800/000000?text=Four+Cheese+Pizza" alt="Four Cheese Fusion" class="w-full h-48 object-cover rounded-xl mb-6 deal-card-image">
-                        <h3 class="text-3xl font-heading text-white mb-2">Four Cheese Fusion</h3>
-                        <p class="text-lg text-gray-400 mb-4">A blend of four delicious cheeses.</p>
-                        <p class="text-5xl font-extrabold text-red-highlight mb-6 animate-pulse">Rs. 990</p>
-                        <button class="bg-[#FFB800] text-black px-8 py-3 rounded-full uppercase font-semibold text-lg button-primary shadow-md add-to-cart-btn">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Burger Category -->
-            <h3 class="text-4xl font-heading text-[#FFD700] text-center mb-10 mt-16 drop-shadow-md fade-in-up">Burgers</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                <!-- Burger Card 1: Classic Beef Burger -->
-                <div class="bg-[#1A1A1A] rounded-2xl p-6 shadow-xl border border-gray-800 flex flex-col items-center text-center deal-card glass-effect fade-in-up">
-                    <div class="deal-card-content w-full">
-                        <img src="https://placehold.co/400x250/FFB800/000000?text=Classic+Beef+Burger" alt="Classic Beef Burger" class="w-full h-48 object-cover rounded-xl mb-6 deal-card-image">
-                        <h3 class="text-3xl font-heading text-white mb-2">Classic Beef Burger</h3>
-                        <p class="text-lg text-gray-400 mb-4">Grilled beef patty, fresh lettuce & tomato.</p>
-                        <p class="text-5xl font-extrabold text-red-highlight mb-6 animate-pulse">Rs. 550</p>
-                        <button class="bg-[#FFB800] text-black px-8 py-3 rounded-full uppercase font-semibold text-lg button-primary shadow-md add-to-cart-btn">Add to Cart</button>
-                    </div>
-                </div>
-
-                <!-- Burger Card 2: Crispy Chicken Burger -->
-                <div class="bg-[#1A1A1A] rounded-2xl p-6 shadow-xl border border-gray-800 flex flex-col items-center text-center deal-card glass-effect fade-in-up">
-                    <div class="deal-card-content w-full">
-                        <img src="https://placehold.co/400x250/FFB800/000000?text=Crispy+Chicken+Burger" alt="Crispy Chicken Burger" class="w-full h-48 object-cover rounded-xl mb-6 deal-card-image">
-                        <h3 class="text-3xl font-heading text-white mb-2">Crispy Chicken Burger</h3>
-                        <p class="text-lg text-gray-400 mb-4">Golden fried chicken, mayo & fresh bun.</p>
-                        <p class="text-5xl font-extrabold text-red-highlight mb-6 animate-pulse">Rs. 480</p>
-                        <button class="bg-[#FFB800] text-black px-8 py-3 rounded-full uppercase font-semibold text-lg button-primary shadow-md add-to-cart-btn">Add to Cart</button>
-                    </div>
-                </div>
-
-                <!-- Burger Card 3: Zesty Zinger Burger -->
-                <div class="bg-[#1A1A1A] rounded-2xl p-6 shadow-xl border border-gray-800 flex flex-col items-center text-center deal-card glass-effect fade-in-up">
-                    <div class="deal-card-content w-full">
-                        <img src="https://placehold.co/400x250/FFB800/000000?text=Zinger+Burger" alt="Zesty Zinger Burger" class="w-full h-48 object-cover rounded-xl mb-6 deal-card-image">
-                        <h3 class="text-3xl font-heading text-white mb-2">Zesty Zinger Burger</h3>
-                        <p class="text-lg text-gray-400 mb-4">Spicy zinger patty with a tangy sauce.</p>
-                        <p class="text-5xl font-extrabold text-red-highlight mb-6 animate-pulse">Rs. 680</p>
-                        <button class="bg-[#FFB800] text-black px-8 py-3 rounded-full uppercase font-semibold text-lg button-primary shadow-md add-to-cart-btn">Add to Cart</button>
-                    </div>
-                </div>
-
-                <!-- Burger Card 4: Mushroom Swiss Burger -->
-                <div class="bg-[#1A1A1A] rounded-2xl p-6 shadow-xl border border-gray-800 flex flex-col items-center text-center deal-card glass-effect fade-in-up">
-                    <div class="deal-card-content w-full">
-                        <img src="https://placehold.co/400x250/FFB800/000000?text=Mushroom+Swiss+Burger" alt="Mushroom Swiss Burger" class="w-full h-48 object-cover rounded-xl mb-6 deal-card-image">
-                        <h3 class="text-3xl font-heading text-white mb-2">Mushroom Swiss Burger</h3>
-                        <p class="text-lg text-gray-400 mb-4">Rich mushroom sauce & melted Swiss cheese.</p>
-                        <p class="text-5xl font-extrabold text-red-highlight mb-6 animate-pulse">Rs. 650</p>
-                        <button class="bg-[#FFB800] text-black px-8 py-3 rounded-full uppercase font-semibold text-lg button-primary shadow-md add-to-cart-btn">Add to Cart</button>
-                    </div>
-                </div>
-
-                <!-- Burger Card 5: Veggie Burger -->
-                <div class="bg-[#1A1A1A] rounded-2xl p-6 shadow-xl border border-gray-800 flex flex-col items-center text-center deal-card glass-effect fade-in-up">
-                    <div class="deal-card-content w-full">
-                        <img src="https://placehold.co/400x250/FFB800/000000?text=Veggie+Burger" alt="Veggie Burger" class="w-full h-48 object-cover rounded-xl mb-6 deal-card-image">
-                        <h3 class="text-3xl font-heading text-white mb-2">Garden Veggie Delight</h3>
-                        <p class="text-lg text-gray-400 mb-4">Wholesome patty made with fresh vegetables.</p>
-                        <p class="text-5xl font-extrabold text-red-highlight mb-6 animate-pulse">Rs. 400</p>
-                        <button class="bg-[#FFB800] text-black px-8 py-3 rounded-full uppercase font-semibold text-lg button-primary shadow-md add-to-cart-btn">Add to Cart</button>
-                    </div>
-                </div>
-
-                <!-- Burger Card 6: Smoky BBQ Burger -->
-                <div class="bg-[#1A1A1A] rounded-2xl p-6 shadow-xl border border-gray-800 flex flex-col items-center text-center deal-card glass-effect fade-in-up">
-                    <div class="deal-card-content w-full">
-                        <img src="https://placehold.co/400x250/FFB800/000000?text=Smoky+BBQ+Burger" alt="Smoky BBQ Burger" class="w-full h-48 object-cover rounded-xl mb-6 deal-card-image">
-                        <h3 class="text-3xl font-heading text-white mb-2">Smoky BBQ Burger</h3>
-                        <p class="text-lg text-gray-400 mb-4">Rich smoky BBQ sauce with a tender patty.</p>
-                        <p class="text-5xl font-extrabold text-red-highlight mb-6 animate-pulse">Rs. 600</p>
-                        <button class="bg-[#FFB800] text-black px-8 py-3 rounded-full uppercase font-semibold text-lg button-primary shadow-md add-to-cart-btn">Add to Cart</button>
+                    
+                    <div id="newAdsNotice" class="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4 text-blue-800 hidden">
+                        <i class="fas fa-sync-alt mr-2"></i> Refreshing ads in <span id="refreshCountdown">10</span> seconds...
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Why Choose Us Section -->
-    <section class="py-16 md:py-24 bg-black text-white" id="why-choose-us">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-5xl md:text-7xl font-heading text-[#FFD700] mb-16 drop-shadow-lg fade-in-up">Why Choose 4Brothers?</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <div class="bg-[#1A1A1A] rounded-2xl p-8 glass-effect fade-in-up">
-                    <svg class="w-20 h-20 mx-auto mb-6 text-[#FFB800]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-12h2v6h-2v-6zm0 8h2v2h-2v-2z"></path></svg>
-                    <h3 class="text-3xl font-heading text-white mb-4">Fresh Ingredients</h3>
-                    <p class="text-gray-400 text-lg">We use only the freshest, locally sourced ingredients for unbeatable taste and quality.</p>
+            
+            <!-- Right Column -->
+            <div class="space-y-6">
+                <!-- User Stats Card -->
+                <div class="card bg-white rounded-xl p-6 shadow-md">
+                    <div class="flex items-center space-x-4 mb-6">
+                        <div class="bg-indigo-100 text-indigo-600 rounded-full w-16 h-16 flex items-center justify-center">
+                            <i class="fas fa-user text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800" id="statsUserName">Welcome Guest</h3>
+                            <p class="text-sm text-gray-500">Member since <span id="memberSince">-</span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-500">Account Status</span>
+                                <span id="accountStatus" class="font-medium text-indigo-600">Basic</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div id="statusProgress" class="progress-fill" style="width: 25%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">Upgrade to Premium at 5000 points</p>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-500">Points Balance</span>
+                                <span class="font-bold text-indigo-700" id="pointsBalance">0</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Earned Today</span>
+                                <span class="font-medium" id="earnedToday">0</span>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-gray-50 p-3 rounded-lg">
+                                <div class="text-gray-500 text-sm">Ads Watched</div>
+                                <div class="font-bold text-indigo-700" id="adsWatched">0</div>
+                            </div>
+                            <div class="bg-gray-50 p-3 rounded-lg">
+                                <div class="text-gray-500 text-sm">Links Shared</div>
+                                <div class="font-bold text-indigo-700" id="linksShared">0</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="bg-[#1A1A1A] rounded-2xl p-8 glass-effect fade-in-up">
-                    <svg class="w-20 h-20 mx-auto mb-6 text-[#FFB800]" fill="currentColor" viewBox="0 0 24 24"><path d="M21 15v3c0 1.66-1.34 3-3 3h-6c-1.66 0-3-1.34-3-3v-3H4c-1.1 0-2 .9-2 2v2c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-2c0-1.1-.9-2-2-2h-3zm-1-9V3c0-1.66-1.34-3-3-3H8c-1.66 0-3 1.34-3 3v3H4c-1.1 0-2 .9-2 2v2c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-3z"></path></svg>
-                    <h3 class="text-3xl font-heading text-white mb-4">Authentic Recipes</h3>
-                    <p class="text-gray-400 text-lg">Our recipes are crafted with passion, bringing you the authentic taste of homemade goodness.</p>
-                </div>
-                <div class="bg-[#1A1A1A] rounded-2xl p-8 glass-effect fade-in-up">
-                    <svg class="w-20 h-20 mx-auto mb-6 text-[#FFB800]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-11v4l3 2 1-2-4-2z"></path></svg>
-                    <h3 class="text-3xl font-heading text-white mb-4">Fast Delivery</h3>
-                    <p class="text-gray-400 text-lg">Hot and fresh food delivered right to your doorstep, quickly and efficiently.</p>
+                
+                <!-- Get Traffic Section -->
+                <div class="card bg-white rounded-xl p-6 shadow-md">
+                    <h2 class="text-xl font-bold text-gray-800 flex items-center mb-4">
+                        <i class="fas fa-rocket mr-2 text-purple-600"></i>
+                        Get More Traffic
+                    </h2>
+                    
+                    <p class="text-gray-600 mb-4">Spend your points to get more clicks and impressions on your links.</p>
+                    
+                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-4">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-info-circle text-purple-600 mr-2"></i>
+                            <span class="text-purple-800 font-medium">Conversion Rate</span>
+                        </div>
+                        <p class="text-sm text-purple-700">10 points = 1 click + 5 impressions</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="block text-gray-700 text-sm font-medium" for="pointsToSpend">
+                                Points to Spend
+                            </label>
+                            <div class="flex items-center space-x-2">
+                                <button class="text-xs px-2 py-1 bg-gray-100 rounded" onclick="document.getElementById('pointsToSpend').value=Math.min(parseInt(document.getElementById('pointsToSpend').value||0)+10, state.user.points)">+10</button>
+                                <button class="text-xs px-2 py-1 bg-gray-100 rounded" onclick="document.getElementById('pointsToSpend').value=Math.min(parseInt(document.getElementById('pointsToSpend').value||0)+100, state.user.points)">+100</button>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <input type="range" id="pointsSlider" min="10" max="500" step="10" 
+                                   class="w-full mb-2" 
+                                   oninput="document.getElementById('pointsToSpend').value=this.value; calculateTraffic()">
+                            <input type="number" id="pointsToSpend" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" 
+                                   min="10" step="10" placeholder="Min 10 points"
+                                   oninput="document.getElementById('pointsSlider').value=this.value; calculateTraffic()">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-medium mb-2" for="selectLink">
+                            Select Your Link
+                        </label>
+                        <select id="selectLink" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" disabled>
+                            <option value="">No links available</option>
+                        </select>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-3 rounded-lg mb-4">
+                        <div class="grid grid-cols-2 gap-2 text-sm">
+                            <div class="text-gray-500">You will get:</div>
+                            <div class="text-right font-medium">
+                                <span id="calculatedClicks">0</span> clicks
+                            </div>
+                            <div class="text-gray-500">and</div>
+                            <div class="text-right font-medium">
+                                <span id="calculatedImpressions">0</span> impressions
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button id="buyTrafficBtn" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-md font-medium transition flex items-center justify-center disabled:opacity-50" disabled>
+                        <span id="buyTrafficText">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            Confirm & Distribute
+                        </span>
+                        <span id="buyTrafficSpinner" class="hidden">
+                            <i class="fas fa-spinner fa-spin mr-2"></i>
+                            Processing...
+                        </span>
+                    </button>
                 </div>
             </div>
         </div>
-    </section>
+    </main>
 
-    <!-- Call to Action Section -->
-    <section class="py-16 md:py-24 bg-gradient-to-br from-black to-[#1A1A1A] text-white text-center">
-        <div class="container mx-auto px-6">
-            <h2 class="text-5xl md:text-7xl font-heading text-[#FFD700] mb-8 drop-shadow-lg fade-in-up">Craving Something Delicious?</h2>
-            <p class="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto fade-in-up">Don't wait! Experience the rich flavors of 4Brothers pizza and burgers today.</p>
-            <button class="bg-[#FFB800] text-black px-12 py-5 rounded-full text-xl md:text-2xl font-bold uppercase button-primary shadow-2xl relative group focus:outline-none">
-                Order Online Now!
-                <span class="absolute right-4 top-1/2 -translate-y-1/2 flex items-center space-x-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 transform -translate-x-full">
-                    <svg class="w-7 h-7 text-black float-animation delay-1" fill="currentColor" viewBox="0 0 24 24"><path d="M13.5 4.5a.75.75 0 00-1.5 0v3.024a3 3 0 00-1.854 1.716L5.343 14.25H2.25a.75.75 0 000 1.5h3.633a.75.75 0 00.672-.444l1.378-2.755 2.597 1.164a.75.75 0 001.213-.538V12a6.002 6.002 0 015.145-5.918 6 6 0 00-5.145-5.918zm0 15a.75.75 0 00-1.5 0v.75a.75.75 0 001.5 0v-.75zM8.25 18a.75.75 0 00-1.5 0v.75a.75.75 0 001.5 0v-.75zM17.25 18a.75.75 0 00-1.5 0v.75a.75.75 0 001.5 0v-.75z"></path><path fill-rule="evenodd" d="M10 18.75a.75.75 0 00-1.5 0v.75a.75.75 0 001.5 0v-.75zM12 21a.75.75 0 00-1.5 0v.75a.75.75 0 001.5 0v-.75zM14 18.75a.75.75 0 00-1.5 0v.75a.75.75 0 001.5 0v-.75zM15.75 12a.75.75 0 00-1.5 0v.75a.75.75 0 001.5 0v-.75z" clip-rule="evenodd"></path></svg>
-                    <svg class="w-8 h-8 text-black float-animation delay-2" fill="currentColor" viewBox="0 0 24 24"><path d="M2.5 17.5a.5.5 0 01.5-.5h19a.5.5 0 01.5.5v1a.5.5 0 01-.5.5h-19a.5.5 0 01-.5-.5v-1zM2.5 13.5a.5.5 0 01.5-.5h19a.5.5 0 01.5.5v1a.5.5 0 01-.5.5h-19a.5.5 0 01-.5-.5v-1zM2.5 9.5a.5.5 0 01.5-.5h19a.5.5 0 01.5.5v1a.5.5 0 01-.5.5h-19a.5.5 0 01-.5-.5v-1zM2.5 5.5a.5.5 0 01.5-.5h19a.5.5 0 01.5.5v1a.5.5 0 01-.5.5h-19a.5.5 0 01-.5-.5v-1z"></path></svg>
-                </span>
-            </button>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-[#1A1A1A] py-12 text-white" id="contact">
-        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
-            <!-- Contact Info -->
-            <div class="fade-in-up">
-                <h4 class="text-2xl font-heading text-[#FFD700] mb-4">Contact Us</h4>
-                <p class="text-gray-400 leading-relaxed">123 Pizza Lane, Food City, PK</p>
-                <p class="text-gray-400">Phone: +92 3XX XXX XXXX</p>
-                <p class="text-gray-400">Email: <a href="mailto:info@4brothers.com" class="hover:text-[#FFD700] transition-colors">info@4brothers.com</a></p>
+    <!-- Add Link Modal -->
+    <div id="addLinkModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">Add New Link</h3>
+                <button id="closeModalBtn" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-            <!-- Quick Menu Links -->
-            <div class="fade-in-up">
-                <h4 class="text-2xl font-heading text-[#FFD700] mb-4">Quick Links</h4>
-                <ul class="space-y-2">
-                    <li><a href="#hero" class="text-gray-400 hover:text-white transition-colors duration-300">Home</a></li>
-                    <li><a href="#menu" class="text-gray-400 hover:text-white transition-colors duration-300">Menu</a></li>
-                    <li><a href="#special-offers" class="text-gray-400 hover:text-white transition-colors duration-300">Offers</a></li>
-                </ul>
-            </div>
-            <!-- Social Links -->
-            <div class="fade-in-up">
-                <h4 class="text-2xl font-heading text-[#FFD700] mb-4">Follow Us</h4>
-                <div class="flex justify-center md:justify-start space-x-6">
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300 transform hover:scale-110">
-                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33V22H12c5.523 0 10-4.477 10-10Z" clip-rule="evenodd" />
-                        </svg>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300 transform hover:scale-110">
-                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.715.056 8.825.351 10.125 1.663 10.45 10.318.043.93.056 1.286.056 3.715s-.013 2.784-.056 3.715c-.351 8.825-1.663 10.125-10.318 10.45-.93.043-1.286.056-3.715.056s-2.784-.013-3.715-.056c-8.825-.351-10.125-1.663-10.45-10.318-.043-.93-.056-1.286-.056-3.715s.013-2.784.056-3.715c.351-8.825 1.663-10.125 10.318-10.45.93-.043 1.286-.056 3.715-.056ZM12 4.076c-2.433 0-2.756.01-3.666.053-7.857.317-8.62 1.077-8.943 8.75-.043.91-.053 1.233-.053 3.666s.01 2.756.053 3.666c.323 7.673 1.086 8.436 8.943 8.75.91.043 1.233.053 3.666.053s2.756-.01 3.666-.053c7.857-.317 8.62-1.077 8.943-8.75.043-.91.053-1.233.053-3.666s-.01-2.756-.053-3.666c-.323-7.673-1.086-8.436-8.943-8.75-.91-.043-1.233-.053-3.666-.053ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm-6.5-.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5Z" clip-rule="evenodd" />
-                        </svg>
-                    </a>
+            
+            <form id="linkForm">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-medium mb-2" for="linkType">
+                        Link Type
+                    </label>
+                    <select id="linkType" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <option value="direct">Direct Link</option>
+                        <option value="website">Website Link</option>
+                        <option value="video">Video Link</option>
+                    </select>
                 </div>
+                
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-medium mb-2" for="linkTitle">
+                        Title (Optional)
+                    </label>
+                    <input type="text" id="linkTitle" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="My Awesome Link">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-medium mb-2" for="linkUrl">
+                        URL
+                    </label>
+                    <input type="url" id="linkUrl" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        placeholder="https://example.com" required
+                        pattern="https?://.+" 
+                        title="Include http:// or https://">
+                </div>
+                
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button type="button" id="cancelAddLinkBtn" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition">
+                        Cancel
+                    </button>
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md font-medium transition">
+                        Add Link
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Popups -->
+    <div id="highEarnersNotif" class="notification-popup fixed bottom-4 right-4 bg-green-600 text-white px-6 py-4 rounded-lg shadow-xl z-50 max-w-sm hidden">
+        <div class="flex items-start">
+            <div class="flex-shrink-0">
+                <i class="fas fa-trophy text-2xl"></i>
+            </div>
+            <div class="ml-3">
+                <h4 class="font-bold flex items-center">
+                    Top Earner Alert!
+                    <span class="ml-2 bg-green-800 text-xs px-2 py-1 rounded-full">New</span>
+                </h4>
+                <p class="mt-1 text-sm">
+                    <span id="randomHighEarner">Alex M.</span> just earned <span class="font-bold">3,450 points</span> today! 
+                </p>
             </div>
         </div>
-        <div class="text-center text-gray-500 mt-10">
-            &copy; 2023 4Brothers. All rights reserved.
-        </div>
-    </footer>
+    </div>
 
+    <div id="highTrafficNotif" class="notification-popup fixed bottom-4 right-4 bg-blue-600 text-white px-6 py-4 rounded-lg shadow-xl z-50 max-w-sm hidden mt-2">
+        <div class="flex items-start">
+            <div class="flex-shrink-0">
+                <i class="fas fa-chart-line text-2xl"></i>
+            </div>
+            <div class="ml-3">
+                <h4 class="font-bold flex items-center">
+                    Traffic Milestone!
+                    <span class="ml-2 bg-blue-800 text-xs px-2 py-1 rounded-full">New</span>
+                </h4>
+                <p class="mt-1 text-sm">
+                    <span id="randomTrafficUser">Sarah J.</span> reached <span class="font-bold">150,000 impressions</span> this week!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
     <script>
-        // JavaScript for scroll-based animations, responsive menu, and Add to Cart functionality
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        
+        try {
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.firestore();
+            const auth = firebase.auth();
+            
+            // Enable offline persistence
+            db.enablePersistence()
+              .catch((err) => {
+                  console.log("Firebase offline persistence error: ", err);
+                  if (err.code == 'failed-precondition') {
+                      console.log("Multiple tabs open, persistence can only be enabled in one tab at a time.");
+                  }
+              });
+        } catch (err) {
+            console.error("Firebase initialization error: ", err);
+        }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const mainNav = document.getElementById('mainNav');
-            const heroSection = document.getElementById('hero');
-            const scrollTriggerSection = document.getElementById('scroll-animation-trigger');
-            const pizzaSlice = document.getElementById('pizzaSlice');
-            const burger = document.getElementById('burger');
-            const dealText = document.getElementById('dealText');
-            const parallaxBg = document.getElementById('parallaxBg');
-            const cartCountElement = document.getElementById('cartCount');
-            const mobileCartCountElement = document.getElementById('mobileCartCount');
-            const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
-            const offerCards = document.querySelectorAll('#special-offers .offer-card');
-            // Select all elements that should animate with the generic fade-in-up class
-            const scrollRevealElements = document.querySelectorAll('.fade-in-up');
-
-
-            let cartItems = 0; // Simple counter for cart items
-
-            // Mobile Menu Logic
-            const mobileMenuButton = document.getElementById('mobileMenuButton');
-            const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
-
-            if (mobileMenuButton && mobileMenuOverlay) {
-                mobileMenuButton.addEventListener('click', () => {
-                    mobileMenuOverlay.classList.remove('translate-x-full');
-                    mobileMenuOverlay.classList.add('translate-x-0');
-                });
-            }
-
-            window.closeMobileMenu = function() {
-                if (mobileMenuOverlay) {
-                    mobileMenuOverlay.classList.remove('translate-x-0');
-                    mobileMenuOverlay.classList.add('translate-x-full');
+        // Demo Data - In a real app, this would come from your backend
+        const demoUsers = [
+            "Alex M.", "Sarah J.", "John D.", "Emily R.", "Michael T.", 
+            "Jessica L.", "David K.", "Olivia S.", "Daniel P.", "Sophia W."
+        ];
+        
+        // State management
+        let state = {
+            isLoggedIn: false,
+            user: {
+                name: "Guest",
+                points: 0,
+                adsWatched: 0,
+                links: [],
+                memberSince: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short' })
+            },
+            tempLinks: [
+                {
+                    type: "website",
+                    title: "My Portfolio",
+                    url: "https://myportfolio.example.com",
+                    clicks: 0,
+                    impressions: 0
                 }
-            };
+            ]
+        };
+        
+        // DOM Elements
+        const loginBtn = document.getElementById('loginBtn');
+        const usernameDisplay = document.getElementById('username');
+        const userPointsDisplay = document.getElementById('userPoints');
+        const statsUserName = document.getElementById('statsUserName');
+        const pointsBalance = document.getElementById('pointsBalance');
+        const earnedToday = document.getElementById('earnedToday');
+        const adsWatched = document.getElementById('adsWatched');
+        const linksShared = document.getElementById('linksShared');
+        const memberSince = document.getElementById('memberSince');
+        const premiumLinkSection = document.getElementById('premiumLinkSection');
+        const visitPremiumBtn = document.getElementById('visitPremiumBtn');
+        const countdown = document.getElementById('countdown');
+        const myLinksSection = document.getElementById('myLinksSection');
+        const linksList = document.getElementById('linksList');
+        const addLinkBtn = document.getElementById('addLinkBtn');
+        const adsContainer = document.getElementById('adsContainer');
+        const watchNowBtns = document.querySelectorAll('.watch-now-btn');
+        const newAdsNotice = document.getElementById('newAdsNotice');
+        const refreshCountdown = document.getElementById('refreshCountdown');
+        const pointsToSpend = document.getElementById('pointsToSpend');
+        const selectLink = document.getElementById('selectLink');
+        const calculatedClicks = document.getElementById('calculatedClicks');
+        const calculatedImpressions = document.getElementById('calculatedImpressions');
+        const buyTrafficBtn = document.getElementById('buyTrafficBtn');
+        const addLinkModal = document.getElementById('addLinkModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const cancelAddLinkBtn = document.getElementById('cancelAddLinkBtn');
+        const linkForm = document.getElementById('linkForm');
+        const highEarnersNotif = document.getElementById('highEarnersNotif');
+        const highTrafficNotif = document.getElementById('highTrafficNotif');
+        const randomHighEarner = document.getElementById('randomHighEarner');
+        const randomTrafficUser = document.getElementById('randomTrafficUser');
+        
+        // Initialize
+        let inactivityTimer;
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(() => {
+                if (state.isLoggedIn) {
+                    alert('You will be logged out due to inactivity');
+                    toggleLogin();
+                }
+            }, 30 * 60 * 1000); // 30 minutes
+        }
 
-            // Add to Cart Functionality
-            addToCartButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    cartItems++;
-                    // Update desktop cart count
-                    if (cartCountElement) {
-                        cartCountElement.textContent = cartItems;
-                        cartCountElement.classList.add('cart-bounce');
-                        setTimeout(() => {
-                            cartCountElement.classList.remove('cart-bounce');
-                        }, 600); // Increased timeout for bouncier animation
-                        cartCountElement.classList.remove('scale-0'); // Ensure it's visible
-                        cartCountElement.classList.add('scale-100');
+        function init() {
+            // Setup inactivity timer
+            resetInactivityTimer();
+            document.addEventListener('mousemove', resetInactivityTimer);
+            document.addEventListener('keypress', resetInactivityTimer);
+            loadOtherUsersLinks();
+            updateUI();
+            startPremiumCountdown();
+            renderLinks();
+            setupAdWatching();
+            setupRandomNotifications();
+            
+            // Set up event listeners
+            loginBtn.addEventListener('click', toggleLogin);
+            addLinkBtn.addEventListener('click', () => addLinkModal.classList.remove('hidden'));
+            closeModalBtn.addEventListener('click', () => addLinkModal.classList.add('hidden'));
+            cancelAddLinkBtn.addEventListener('click', () => addLinkModal.classList.add('hidden'));
+            linkForm.addEventListener('submit', handleAddLink);
+            pointsToSpend.addEventListener('input', calculateTraffic);
+            buyTrafficBtn.addEventListener('click', buyTraffic);
+            visitPremiumBtn.addEventListener('click', visitPremiumLink);
+        }
+        
+        // Toggle login state (demo purposes)
+        function toggleLogin() {
+            state.isLoggedIn = !state.isLoggedIn;
+            if (state.isLoggedIn) {
+                state.user.name = demoUsers[Math.floor(Math.random() * demoUsers.length)];
+                state.user.points = Math.floor(Math.random() * 500);
+                state.user.adsWatched = Math.floor(Math.random() * 50);
+            } else {
+                state.user.name = "Guest";
+                state.user.points = 0;
+                state.user.adsWatched = 0;
+            }
+            updateUI();
+        }
+        
+        // Update UI based on state
+        function updateUI() {
+            usernameDisplay.textContent = state.user.name;
+            userPointsDisplay.textContent = state.user.points;
+            statsUserName.textContent = state.isLoggedIn ? state.user.name : "Welcome Guest";
+            pointsBalance.textContent = state.user.points;
+            earnedToday.textContent = Math.floor(state.user.points / 3);
+            adsWatched.textContent = state.user.adsWatched;
+            linksShared.textContent = state.user.links.length + state.tempLinks.length;
+            memberSince.textContent = state.user.memberSince;
+            
+            if (state.isLoggedIn) {
+                loginBtn.textContent = "Logout";
+                premiumLinkSection.classList.remove('hidden');
+                myLinksSection.classList.remove('hidden');
+                selectLink.disabled = false;
+            } else {
+                loginBtn.textContent = "Login/Signup";
+                premiumLinkSection.classList.add('hidden');
+                myLinksSection.classList.add('hidden');
+                selectLink.disabled = true;
+            }
+            
+            // Update account status progress
+            const statusProgress = document.getElementById('statusProgress');
+            const progressPercentage = Math.min((state.user.points / 5000) * 100, 100);
+            statusProgress.style.width = `${progressPercentage}%`;
+        }
+        
+        // Premium link countdown timer
+        function startPremiumCountdown() {
+            let minutes = 4;
+            let seconds = 59;
+            
+            const timer = setInterval(() => {
+                countdown.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+                
+                if (seconds === 0) {
+                    if (minutes === 0) {
+                        clearInterval(timer);
+                        premiumLinkSection.classList.add('hidden');
+                        return;
                     }
-                    // Update mobile cart count
-                    if (mobileCartCountElement) {
-                        mobileCartCountElement.textContent = cartItems;
-                        mobileCartCountElement.classList.add('cart-bounce');
-                        setTimeout(() => {
-                            mobileCartCountElement.classList.remove('cart-bounce');
-                        }, 600); // Increased timeout
-                        mobileCartCountElement.classList.remove('scale-0'); // Ensure it's visible
-                        mobileCartCountElement.classList.add('scale-100');
-                    }
-                });
+                    minutes--;
+                    seconds = 59;
+                } else {
+                    seconds--;
+                }
+            }, 1000);
+        }
+        
+        // Render user's links
+        function renderLinks() {
+            linksList.innerHTML = '';
+            
+            const allLinks = [...state.user.links, ...state.tempLinks];
+            
+            if (allLinks.length === 0) {
+                linksList.innerHTML = `
+                    <div class="border-b pb-2 border-gray-200">
+                        <p class="text-sm text-gray-400 mb-1 flex items-center">
+                            <span>No links added yet</span>
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+            
+            allLinks.forEach(link => {
+                const linkEl = document.createElement('div');
+                linkEl.className = 'border border-gray-200 rounded-lg p-3 mb-3 last:mb-0';
+                linkEl.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="font-medium text-gray-800">${link.title || 'My Link'}</p>
+                            <p class="text-sm text-indigo-600 truncate">${link.url}</p>
+                        </div>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                            ${link.type.charAt(0).toUpperCase() + link.type.slice(1)}
+                        </span>
+                    </div>
+                    <div class="flex justify-between items-center mt-2 text-xs">
+                        <div class="flex space-x-4">
+                            <span class="text-gray-500 flex items-center">
+                                <i class="fas fa-mouse-pointer mr-1"></i> ${link.clicks}
+                            </span>
+                            <span class="text-gray-500 flex items-center">
+                                <i class="fas fa-eye mr-1"></i> ${link.impressions}
+                            </span>
+                        </div>
+                        <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium manage-btn" data-url="${link.url}">
+                            Manage
+                        </button>
+                    </div>
+                `;
+                linksList.appendChild(linkEl);
             });
-
-            // --- Scroll Animation Logic for Hero Transition ---
-            function handleHeroScroll() {
-                const scrollY = window.scrollY;
-
-                // Defensive checks for core elements
-                if (!mainNav || !heroSection || !scrollTriggerSection || !pizzaSlice || !burger || !dealText || !parallaxBg) {
-                    return; // Exit if elements are missing
-                }
-
-                // Parallax effect for background
-                parallaxBg.style.transform = `translateY(${scrollY * 0.1}px)`;
-
-                // Header fade upward & blur
-                if (scrollY > 80) {
-                    mainNav.classList.add('header-scrolled');
-                } else {
-                    mainNav.classList.remove('header-scrolled');
-                }
-
-                // Calculate trigger offset dynamically for the initial flying animation
-                const triggerOffset = scrollTriggerSection.offsetTop - (window.innerHeight * 0.66);
-
-                // Scroll-triggered animations for pizza, burger, and text
-                if (scrollY > triggerOffset) {
-                    pizzaSlice.classList.add('animate-in');
-                    burger.classList.add('animate-in');
-                    dealText.classList.add('animate-in');
-                } else {
-                    // Reset if scrolled back up (optional, for re-triggering)
-                    // Only remove if they are meant to re-animate on scroll up.
-                    // For single-time reveals, omit these `remove` lines.
-                    // pizzaSlice.classList.remove('animate-in');
-                    // burger.classList.remove('animate-in');
-                    // dealText.classList.remove('animate-in');
-                }
-            }
-
-            // --- Intersection Observer for Special Offer Cards ---
-            const offerObserverOptions = {
-                root: null, // viewport as root
-                rootMargin: '0px',
-                threshold: 0.3 // Trigger when 30% of the item is visible
-            };
-
-            const offerObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const card = entry.target;
-                        // Determine slide direction based on index within the grid
-                        const index = Array.from(offerCards).indexOf(card);
-                        // Apply animation direction only for larger screens
-                        if (window.innerWidth > 768) {
-                            if (index % 2 === 0) { // Even index (0, 2, 4...) -> slide from left
-                                card.classList.add('slide-in-left');
-                            } else { // Odd index (1, 3, 5...) -> slide from right
-                                card.classList.add('slide-in-right');
+            
+            // Update select dropdown for traffic
+            selectLink.innerHTML = '<option value="">Select a link</option>';
+            allLinks.forEach(link => {
+                const option = document.createElement('option');
+                option.value = link.url;
+                option.textContent = link.title || link.url;
+                selectLink.appendChild(option);
+            });
+        }
+        
+        // Setup ad watching functionality
+        function setupAdWatching() {
+            // Simulate watching an ad
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('watch-now-btn') || 
+                    e.target.closest('.watch-now-btn')) {
+                    e.preventDefault();
+                    
+                    const btn = e.target.classList.contains('watch-now-btn') ? 
+                                e.target : e.target.closest('.watch-now-btn');
+                    const adContainer = btn.closest('.border');
+                    
+                    if (btn.textContent === 'Watch Now') {
+                        btn.textContent = 'Watching...';
+                        btn.disabled = true;
+                        
+                        // Start progress bar animation
+                        const progressBar = adContainer.querySelector('.progress-fill');
+                        let width = 0;
+                        const interval = setInterval(() => {
+                            if (width >= 100) {
+                                clearInterval(interval);
+                                completeAdWatch(btn, progressBar);
+                            } else {
+                                width++;
+                                progressBar.style.width = `${width}%`;
                             }
-                        }
-                        // Add the animate-in class after a small delay for staggered effect
-                        setTimeout(() => {
-                            card.classList.add('animate-in-offer');
-                        }, index * 200); // Increased stagger delay for more noticeable effect
-                        observer.unobserve(card); // Stop observing once animated
+                        }, 30);
                     }
-                });
-            }, offerObserverOptions);
-
-            // Observe each offer card
-            offerCards.forEach(card => {
-                offerObserver.observe(card);
+                }
             });
-
-            // --- Intersection Observer for Generic Fade In Up Elements ---
-            const genericRevealObserverOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.1 // Trigger when 10% of the element is visible
-            };
-
-            const genericRevealObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const element = entry.target;
-                        element.classList.add('animate-in');
-                        observer.unobserve(element); // Animate once
+        }
+        
+        // Complete watching an ad
+        function completeAdWatch(btn, progressBar) {
+            if (!state.isLoggedIn) {
+                alert('Please login to earn points!');
+                return;
+            }
+            
+            btn.textContent = 'Thanks!';
+            progressBar.style.backgroundColor = '#10b981';
+            
+            setTimeout(() => {
+                state.user.points += 10;
+                state.user.adsWatched++;
+                updateUI();
+                
+                btn.textContent = 'Earned +10 pts';
+                btn.style.backgroundColor = '#10b981';
+                
+                // In a real app, we would fetch new ads from server after a delay
+                newAdsNotice.classList.remove('hidden');
+                let count = 10;
+                refreshCountdown.textContent = count;
+                
+                const refreshInterval = setInterval(() => {
+                    count--;
+                    refreshCountdown.textContent = count;
+                    
+                    if (count <= 0) {
+                        clearInterval(refreshInterval);
+                        newAdsNotice.classList.add('hidden');
+                        // Here you would typically fetch new ads from the server
+                        // For demo, we'll just simulate it by resetting the UI
+                        btn.textContent = 'Watch Now';
+                        btn.style.backgroundColor = '';
+                        btn.disabled = false;
+                        progressBar.style.width = '0%';
+                        progressBar.style.backgroundColor = '';
                     }
+                }, 1000);
+            }, 1000);
+        }
+        
+        // Calculate traffic from points
+        function calculateTraffic() {
+            const points = parseInt(pointsToSpend.value) || 0;
+            const clicks = Math.floor(points / 10);
+            const impressions = clicks * 5;
+            
+            calculatedClicks.textContent = clicks;
+            calculatedImpressions.textContent = impressions;
+            
+            // Enable/disable buy button based on valid selection
+            buyTrafficBtn.disabled = points < 10 || !selectLink.value;
+        }
+        
+        // Buy traffic for a link
+        // Show user's purchased links to other users
+        function distributeLinks() {
+            db.collection('activeLinks')
+                .orderBy('timestamp', 'desc')
+                .onSnapshot(snapshot => {
+                    const container = document.getElementById('userLinksToWatch');
+                    container.innerHTML = '';
+                    
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        const linkItem = document.createElement('div');
+                        linkItem.className = 'border border-gray-200 rounded-lg p-4';
+                        linkItem.innerHTML = `
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center space-x-3">
+                                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c364f242-8621-413f-9e91-8938e22344ce.png" alt="User avatar" class="rounded-full w-10 h-10">
+                                    <div>
+                                        <div class="font-medium">${data.userName}</div>
+                                        <div class="text-xs text-gray-500">Spent ${data.points} points</div>
+                                    </div>
+                                </div>
+                                <span class="text-xs bg-indigo-100 text-indigo-800 px-2 py-1 rounded">
+                                    ${data.clicksRemaining} clicks left
+                                </span>
+                            </div>
+                            <div class="relative aspect-video bg-gray-100 rounded overflow-hidden mb-3">
+                                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f4b1abcd-db66-41bb-bcaa-5f741ce114ea.png" alt="User submitted content preview" class="w-full h-full object-cover">
+                            </div>
+                            <button class="w-full watch-user-link-btn bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md font-medium transition" 
+                                    data-id="${doc.id}" data-url="${data.url}">
+                                Watch & Earn 10 Points
+                            </button>
+                        `;
+                        container.appendChild(linkItem);
+                    });
                 });
-            }, genericRevealObserverOptions);
+        }
 
-            // Observe all elements with the 'fade-in-up' class
-            scrollRevealElements.forEach(element => {
-                genericRevealObserver.observe(element);
-            });
-
-
-            // Add main scroll event listener
-            window.addEventListener('scroll', handleHeroScroll);
-
-            // Initial call to set states on load
-            handleHeroScroll();
+        // Handle watching user-submitted links
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('watch-user-link-btn')) {
+                const btn = e.target;
+                const linkId = btn.dataset.id;
+                const url = btn.dataset.url;
+                
+                // Show loading/progress
+                btn.disabled = true;
+                btn.textContent = 'Processing...';
+                
+                // In real app, would open the link
+                setTimeout(() => {
+                    // Award points to watcher
+                    state.user.points += 10;
+                    updateUI();
+                    
+                    // Update traffic stats in Firestore
+                    db.collection('activeLinks').doc(linkId).update({
+                        clicksRemaining: firebase.firestore.FieldValue.increment(-1),
+                        impressions: firebase.firestore.FieldValue.increment(5)
+                    });
+                    
+                    btn.textContent = 'Earned +10 Points!';
+                    setTimeout(() => {
+                        btn.textContent = 'Watch & Earn 10 Points';
+                        btn.disabled = false;
+                    }, 2000);
+                }, 1500);
+            }
         });
+
+        function buyTraffic() {
+            if (!state.isLoggedIn) return;
+            
+            const points = parseInt(pointsToSpend.value);
+            if (points > state.user.points) {
+                alert('Not enough points!');
+                return;
+            }
+            
+            const linkUrl = selectLink.value;
+            const allLinks = [...state.user.links, ...state.tempLinks];
+            const linkIndex = allLinks.findIndex(l => l.url === linkUrl);
+            
+            if (linkIndex !== -1) {
+                const clicks = Math.floor(points / 10);
+                const impressions = clicks * 5;
+                
+                if (linkIndex < state.user.links.length) {
+                    state.user.links[linkIndex].clicks += clicks;
+                    state.user.links[linkIndex].impressions += impressions;
+                } else {
+                    const tempIndex = linkIndex - state.user.links.length;
+                    state.tempLinks[tempIndex].clicks += clicks;
+                    state.tempLinks[tempIndex].impressions += impressions;
+                }
+                
+                state.user.points -= points;
+                updateUI();
+                renderLinks();
+                
+                alert(`Success! Your link will receive ${clicks} clicks and ${impressions} impressions.`);
+            }
+        }
+        
+        // Handle adding a new link
+        function handleAddLink(e) {
+            e.preventDefault();
+            
+            const type = document.getElementById('linkType').value;
+            const title = document.getElementById('linkTitle').value;
+            const url = document.getElementById('linkUrl').value;
+            
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+            
+            const newLink = {
+                type,
+                title,
+                url,
+                clicks: 0,
+                impressions: 0
+            };
+            
+            state.user.links.push(newLink);
+            
+            // Add link to Firestore so other users can see it
+            if (auth.currentUser) {
+                db.collection('sharedLinks').add({
+                }).catch(error => {
+                    console.error("Error adding link: ", error);
+                    alert("Failed to share link. Please try again.");
+                    throw error;
+                }).then(() => {
+                    userId: auth.currentUser.uid,
+                    userName: state.user.name,
+                    link: newLink,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    clicks: 0,
+                    impressions: 0
+                });
+            }
+            
+            updateUI();
+            renderLinks();
+            addLinkModal.classList.add('hidden');
+            linkForm.reset();
+        }
+        
+        // Handle premium link visits with cooldown
+        function setupPremiumLinks() {
+            const links = [
+                { id: 1, button: 'visitPremiumBtn1', countdown: 'countdown1', cooldown: 'cooldown1', text: 'premiumBtnText1' },
+                { id: 2, button: 'visitPremiumBtn2', countdown: 'countdown2', cooldown: 'cooldown2', text: 'premiumBtnText2' }
+            ];
+
+            links.forEach(link => {
+                const btn = document.getElementById(link.button);
+                btn.addEventListener('click', () => {
+                    if (!state.isLoggedIn) {
+                        alert('Please login to claim this offer!');
+                        return;
+                    }
+
+                    if (btn.dataset.locked === 'true') return;
+
+                    // Start cooldown
+                    btn.dataset.locked = 'true';
+                    document.getElementById(link.cooldown).classList.remove('hidden');
+                    document.getElementById(link.text).textContent = 'Claimed +100 pts';
+                    btn.style.backgroundColor = '#10b981';
+                    state.user.points += 100;
+                    updateUI();
+
+                    let seconds = 120;
+                    const timer = setInterval(() => {
+                        const mins = Math.floor(seconds / 60);
+                        const secs = seconds % 60;
+                        document.getElementById(link.countdown).textContent = `${mins}:${secs < 10 ? '0' + secs : secs}`;
+                        
+                        if (seconds <= 0) {
+                            clearInterval(timer);
+                            btn.dataset.locked = 'false';
+                            document.getElementById(link.cooldown).classList.add('hidden');
+                            document.getElementById(link.text).textContent = 'Visit Now';
+                            btn.style.backgroundColor = '';
+                        }
+                        seconds--;
+                    }, 1000);
+
+                    // In real app, would redirect here
+                    setTimeout(() => {
+                        alert(`You earned 100 points! Redirecting to premium ad ${link.id} would happen here.`);
+                    }, 500);
+                });
+            });
+        }
+
+        // Call this in init() after DOM elements are ready
+        
+        // Setup random notifications
+        function loadOtherUsersLinks() {
+            db.collection('sharedLinks')
+                .orderBy('timestamp', 'desc')
+                .limit(10)
+                .onSnapshot((snapshot) => {
+                    const linksList = document.getElementById('otherUserLinksList');
+                    linksList.innerHTML = '';
+                    
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        const linkItem = document.createElement('div');
+                        linkItem.className = 'border border-gray-200 rounded-lg p-3 mb-3 last:mb-0';
+                        linkItem.innerHTML = `
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="font-medium text-gray-800">${data.userName}: ${data.link.title || 'Shared Link'}</p>
+                                    <p class="text-sm text-blue-600 truncate">${data.link.url}</p>
+                                </div>
+                                <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                                    ${data.link.type.charAt(0).toUpperCase() + data.link.type.slice(1)}
+                                </span>
+                            </div>
+                            <div class="flex justify-between items-center mt-2 text-xs">
+                                <div class="flex space-x-4">
+                                    <span class="text-gray-500 flex items-center">
+                                        <i class="fas fa-mouse-pointer mr-1"></i> ${data.clicks}
+                                    </span>
+                                    <span class="text-gray-500 flex items-center">
+                                        <i class="fas fa-eye mr-1"></i> ${data.impressions}
+                                    </span>
+                                </div>
+                                <button class="text-blue-600 hover:text-blue-800 text-sm font-medium view-btn" data-url="${data.link.url}">
+                                    View
+                                </button>
+                            </div>
+                        `;
+                        linksList.appendChild(linkItem);
+                    });
+                    
+                    if (snapshot.empty) {
+                        linksList.innerHTML = '<div class="text-sm text-gray-400 italic">No shared links yet</div>';
+                    }
+                });
+        }
+
+        function setupRandomNotifications() {
+            // First notification (top earners)
+            setTimeout(() => {
+                randomHighEarner.textContent = demoUsers[Math.floor(Math.random() * demoUsers.length)];
+                highEarnersNotif.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    highEarnersNotif.classList.add('hidden');
+                }, 5000);
+            }, 3000);
+            
+            // Second notification (traffic milestones)
+            setTimeout(() => {
+                randomTrafficUser.textContent = demoUsers[Math.floor(Math.random() * demoUsers.length)];
+                highTrafficNotif.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    highTrafficNotif.classList.add('hidden');
+                }, 5000);
+            }, 8000);
+        }
+        
+        // Initialize the app
+        init();
     </script>
 </body>
 </html>
